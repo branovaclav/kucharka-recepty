@@ -1,0 +1,5 @@
+/* @c:fonts */
+/* Self-hosted, subset (Latin + Czech/Slovak), SIL OFL. Files live next to the page in fonts/. */
+@font-face { font-family: "Fraunces"; src: url("fonts/fraunces.woff2") format("woff2"); font-weight: 600 900; font-display: swap; }
+@font-face { font-family: "Atkinson"; src: url("fonts/atkinson-regular.woff2") format("woff2"); font-weight: 400; font-display: swap; }
+@font-face { font-family: "Atkinson"; src: url("fonts/atkinson-bold.woff2") format("woff2"); font-weight: 700; font-display: swap; }

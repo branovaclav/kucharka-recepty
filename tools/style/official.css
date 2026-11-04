@@ -1,0 +1,12 @@
+/* @c:official — additions for the official pages (cookbook/cookbook.md §Official additions) */
+/* @c:checklist-group — non-clickable group heading inside the ingredient list ("Dále:", "Ozdobenie:"); has no <button>, so script.js indexes stay stable */
+.checklist .checklist-group { grid-column: 1 / -1; margin-top: .6rem; padding: .3rem .5rem 0; border-top: 2px dashed var(--dot);
+  font-family: var(--font-display); font-weight: 700; font-size: 1.2rem; color: var(--cobalt); }
+/* @c:rating-inherited — person has no own rating → shows the family (overall) value with a dashed rim */
+.rating[data-inherited] { border-style: dashed; opacity: .85; }
+.rating[data-inherited]::after { content: " ·\00a0jako rodina"; font-weight: 400; font-size: .85em; }
+@media (max-width: 380px) { .rating[data-inherited]::after { content: ""; } }
+.notes .notes-empty { color: #5b6478; font-style: italic; }
+.src-rating small { overflow-wrap: anywhere; }
+.appliances:empty::before, .labels:empty { display: none; }
+.step-body > p:first-child { padding-top: .9rem; }   /* step without a heading: align text with the number disc */

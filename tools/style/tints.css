@@ -1,0 +1,10 @@
+/* @c:tints */
+/* Pastel tint by MAIN INGREDIENT — set once per page: <body data-tint="chicken">.
+   --tint = pastel surface, --tint-strong = mid accent (borders, tape, dots; never under text),
+   --tint-ink = dark tint-coloured text (>= 6.3:1 on --tint and >= 7.7:1 on white). Same hex in every design. */
+body, body[data-tint="chicken"] { --tint: #FCEDBE; --tint-strong: #E9C153; --tint-ink: #684D00; }  /* drůbež — teplá žlutá */
+body[data-tint="pork-beef"]     { --tint: #F6DACD; --tint-strong: #D98A6B; --tint-ink: #7A3820; }  /* vepřové, hovězí — světlá terakota */
+body[data-tint="minced"]        { --tint: #FFE3CF; --tint-strong: #F3A576; --tint-ink: #80421A; }  /* mleté maso — broskvová */
+body[data-tint="pasta-rice"]    { --tint: #F5EEDC; --tint-strong: #D5C192; --tint-ink: #5E4F2C; }  /* těstoviny, rýže, přílohy — krémová */
+body[data-tint="fish"]          { --tint: #DCEAF5; --tint-strong: #8CB5D4; --tint-ink: #1F4E76; }  /* ryby — jemná modrá */
+body[data-tint="veg"]           { --tint: #E0ECDA; --tint-strong: #99BB8E; --tint-ink: #36592F; }  /* vegetariánské — šalvějová */

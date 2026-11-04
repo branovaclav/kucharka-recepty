@@ -1,0 +1,127 @@
+{
+ "slug": "bryndzove-halusky",
+ "recipe_id": "bryndzove-halusky",
+ "lang": "sk",
+ "source": {
+  "site": "Varecha.sk",
+  "url": "https://varecha.pravda.sk/recepty/tradicne-bryndzove-halusky/85825-recept.html",
+  "title": "Tradičné bryndzové halušky",
+  "author": "Jana Štrbková (foodblog Medové motúzy)",
+  "rating": "",
+  "rating_count": "",
+  "photo": "Foto: Jana Štrbková."
+ },
+ "hero": {
+  "file": "halusky-hero.jpg",
+  "alt": "Bryndzové halušky s praženou slaninou a pažítkou"
+ },
+ "lede": "Vynikajúce bryndzové halušky, to je tradičné slovenské jedlo, ktoré nesmie chýbať na našich stoloch. Môj recept je jednoduchý, s praženou slaninkou z mangalice a nasekanou pažítkou.",
+ "time_sub": "30 min príprava + 10 min tepelná úprava",
+ "servings": [
+  "4",
+  "porcie"
+ ],
+ "ingr_small": "pre 4 porcie",
+ "ingredients": [
+  [
+   "750 g",
+   "zemiaky"
+  ],
+  [
+   "300 g",
+   "múka polohrubá"
+  ],
+  [
+   "50 g",
+   "slanina mangalicová údená"
+  ],
+  [
+   "250 g",
+   "ovčia bryndza"
+  ],
+  [
+   "",
+   "soľ"
+  ],
+  {
+   "group": "Ozdobenie:"
+  },
+  [
+   "1 zväzok",
+   "pažítka"
+  ],
+  [
+   "",
+   "cibuľka jarná"
+  ]
+ ],
+ "steps": [
+  {
+   "h": "",
+   "p": [
+    "Do veľkého hrnca dáme variť osolenú vodu. Nadrobno nakrájanú slaninu upražíme na panvici dozlatista. Na halušky očistíme zemiaky a najemno ich nastrúhame na strúhadle. Pridáme múku, soľ a vypracujeme cesto, ktoré nesmie byť priveľmi riedke a ani tuhé, aby sa dobre pretláčalo cez sitko."
+   ],
+   "extras": [
+    {
+     "kind": "our-inline",
+     "html": "Brambory strouhejte až těsně před míchaním těsta — nastrouhané na vzduchu rychle tmavnou. Slaninu můžete místo na pánvi upražit i v horkovzdušné fritéze (viz tip níže)."
+    }
+   ]
+  },
+  {
+   "h": "",
+   "p": [
+    "Cesto pretláčame cez sitko na halušky (alebo hádžeme z doštičky nožom namočeným do vriacej vody) do hrnca s vriacou osolenou vodou. Keď halušky vyplávajú na hladinu, necháme ich ešte chvíľku variť a vyberieme kovovým sitkom, preložíme do misky a zmiešame s masťou z upraženej slaninky, aby sa nezlepili."
+   ],
+   "extras": [
+    {
+     "kind": "sidenote",
+     "html": "Nemáte-li sítko na halušky (haluškár), poslouží druhý způsob z receptu: těsto dejte na prkénko a nožem namáčeným ve vroucí vodě ho odkrajujte po kouskách rovnou do hrnce."
+    },
+    {
+     "kind": "warning",
+     "html": "Vroucí voda a pára pálí. Při pretláčení držte ruce nad hrncem jen krátce a halušky vybírejte děrovanou naběračkou nebo sítkem, ne prsty."
+    }
+   ]
+  },
+  {
+   "h": "",
+   "p": [
+    "Bryndzu zmiešame s dvomi lyžicami vody z halušiek. Halušky môžeme v miske hneď zmiešať s bryndzou alebo bryndzu servírovať až na tanieri."
+   ]
+  },
+  {
+   "h": "",
+   "p": [
+    "Zelenú vňať z jarnej cibuľky nakrájame nadrobno. Halušky naservírujeme na tanier, posypeme opraženou slaninou, nakrájanou cibuľkovou vňaťou a nasekanou pažítkou."
+   ]
+  }
+ ],
+ "tips": [
+  {
+   "kind": "ours",
+   "h": "Slanina bez pánve · horkovzdušná fritéza",
+   "facts": [
+    [
+     "180 °C",
+     "teplota"
+    ],
+    [
+     "6–8 min",
+     "doba"
+    ],
+    [
+     "v ½",
+     "promíchat"
+    ]
+   ],
+   "p_html": [
+    "Nadrobno nakrájenou slaninu rozprostřete v koši fritézy a pražte dozlatova. V polovině promíchejte a hlídejte — drobné kousky zhnědnou rychle.",
+    "Vypečený tuk z dna fritézy použijte na promíchání halušek místo masti z pánve."
+   ]
+  }
+ ],
+ "foot_extra": [],
+ "title": "Bryndzové halušky",
+ "tint": "pasta-rice"
+}
