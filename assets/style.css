@@ -1,0 +1,340 @@
+/* ==========================================================================
+   Rodinná kuchařka — shared stylesheet
+   Visual theme: "Smalt & puntík" — Czech enamelware kitchen.
+   Cream enamel, cobalt rims, tomato-red accents, blue polka dots,
+   hard offset shadows like a printed kitchen card.
+   Every recipe page and the index use ONLY this file (plus local fonts).
+   ========================================================================== */
+
+/* ---------- Fonts (self-hosted, SIL Open Font License) ---------- */
+@font-face { font-family: "Fraunces"; src: url("fonts/fraunces.woff2") format("woff2");
+  font-weight: 100 900; font-style: normal; font-display: swap; }
+@font-face { font-family: "Fraunces"; src: url("fonts/fraunces-italic.woff2") format("woff2");
+  font-weight: 100 900; font-style: italic; font-display: swap; }
+@font-face { font-family: "Atkinson"; src: url("fonts/atkinson-regular.woff2") format("woff2");
+  font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: "Atkinson"; src: url("fonts/atkinson-bold.woff2") format("woff2");
+  font-weight: 700; font-style: normal; font-display: swap; }
+@font-face { font-family: "Atkinson"; src: url("fonts/atkinson-italic.woff2") format("woff2");
+  font-weight: 400; font-style: italic; font-display: swap; }
+
+/* ---------- Design tokens ---------- */
+:root {
+  --cream:   #f7f0e1;   /* enamel body */
+  --paper:   #fffaf0;   /* card face */
+  --cobalt:  #183a74;   /* enamel rim / main ink */
+  --ink:     #14223d;   /* body text (contrast ~14:1 on cream) */
+  --tomato:  #c8402a;   /* accent */
+  --mustard: #f0b93a;   /* tip boxes */
+  --sage:    #4f7a55;   /* done / checked */
+  --dot:     #c9d6ee;   /* polka dots */
+  --line:    #183a74;
+
+  --font-display: "Fraunces", Georgia, "Times New Roman", serif;
+  --font-body: "Atkinson", "Segoe UI", system-ui, -apple-system, sans-serif;
+
+  --fs-body: clamp(1.2rem, 0.95rem + 0.9vw, 1.45rem);   /* ~19–23px */
+  --fs-step: clamp(1.3rem, 1rem + 1.1vw, 1.65rem);      /* ~21–26px */
+  --fs-h1:   clamp(2.6rem, 1.6rem + 4.2vw, 4.6rem);
+  --fs-h2:   clamp(1.8rem, 1.3rem + 1.8vw, 2.5rem);
+
+  --rim: 3px solid var(--line);
+  --radius: 22px;
+  --shadow: 6px 6px 0 var(--cobalt);
+  --shadow-sm: 4px 4px 0 var(--cobalt);
+  --gap: clamp(1rem, 0.6rem + 1.6vw, 2rem);
+  --maxw: 1240px;
+}
+
+/* ---------- Base ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--cream);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: var(--fs-body);
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+img { max-width: 100%; display: block; }
+a { color: var(--cobalt); text-decoration-thickness: 2px; text-underline-offset: 3px; }
+a:hover { color: var(--tomato); }
+:focus-visible { outline: 4px solid var(--mustard); outline-offset: 3px; border-radius: 6px; }
+.wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 var(--gap); }
+.visually-hidden { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+h1, h2, h3 {
+  font-family: var(--font-display);
+  font-variation-settings: "SOFT" 100, "WONK" 1;
+  color: var(--cobalt);
+  line-height: 1.05;
+  margin: 0;
+}
+
+/* Polka-dot enamel band (the signature motif) */
+.dots {
+  background-color: var(--cobalt);
+  background-image:
+    radial-gradient(circle, var(--paper) 0 5px, transparent 5.5px),
+    radial-gradient(circle, var(--paper) 0 5px, transparent 5.5px);
+  background-size: 34px 34px;
+  background-position: 0 0, 17px 17px;
+}
+
+/* ---------- Top bar ---------- */
+.topbar { border-bottom: var(--rim); background: var(--paper); }
+.topbar .wrap {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 0.75rem 1rem; flex-wrap: wrap; padding-block: 0.7rem;
+}
+.brand {
+  font-family: var(--font-display); font-weight: 800; font-size: 1.35rem;
+  font-variation-settings: "SOFT" 100, "WONK" 1;
+  color: var(--cobalt); text-decoration: none; display: inline-flex; align-items: center; gap: .5rem;
+}
+.brand::before {
+  content: ""; width: 1.4rem; height: 1.4rem; border-radius: 50%;
+  background: var(--tomato); box-shadow: inset 0 0 0 4px var(--paper), 0 0 0 3px var(--cobalt);
+}
+.backlink { font-weight: 700; text-decoration: none; }
+.backlink::before { content: "← "; }
+
+/* Source credit pill */
+.credit {
+  font-size: 0.95rem; line-height: 1.35;
+  background: var(--paper); border: 2px solid var(--cobalt); border-radius: 18px;
+  padding: 0.4rem 0.95rem; margin: 0;
+}
+.credit a { font-weight: 700; }
+
+/* ---------- Recipe hero ---------- */
+.hero { position: relative; padding-block: var(--gap) 0; }
+.hero-grid {
+  display: grid; gap: var(--gap);
+  grid-template-columns: 1fr;
+  align-items: center;
+}
+.hero-photo {
+  margin: 0; border: var(--rim); border-radius: var(--radius);
+  overflow: hidden; box-shadow: var(--shadow); background: var(--paper);
+  aspect-ratio: 4 / 3;
+}
+.hero-photo img { width: 100%; height: 100%; object-fit: cover; }
+.kicker {
+  display: inline-block; font-weight: 700; font-size: 0.9rem; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--paper); background: var(--tomato); padding: .3rem .8rem; border-radius: 999px; margin-bottom: .8rem;
+}
+.hero h1 { font-size: var(--fs-h1); font-weight: 800; letter-spacing: -0.01em; }
+.lede { margin: 1rem 0 0; max-width: 38ch; }
+.rating { margin-top: 1rem; font-weight: 700; display: flex; align-items: center; gap: .5rem; flex-wrap: wrap; }
+.stars { color: var(--tomato); letter-spacing: .1em; font-size: 1.3em; line-height: 1; }
+.rating small { font-weight: 400; font-size: .9em; }
+
+@media (min-width: 1000px) {
+  .hero-grid { grid-template-columns: 1.1fr 1fr; }
+  .hero-photo { transform: rotate(-1.2deg); }
+}
+
+/* ---------- Meta strip ---------- */
+.meta {
+  list-style: none; margin: calc(var(--gap) * 1.3) 0 0; padding: 0;
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  border: var(--rim); border-radius: var(--radius); overflow: hidden;
+  background: var(--paper); box-shadow: var(--shadow-sm);
+}
+.meta li { padding: .9rem 1.1rem; border-right: 2px dashed var(--dot); }
+.meta li:last-child { border-right: 0; }
+.meta .label { display: block; font-size: .78rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--tomato); }
+.meta .value { display: block; font-family: var(--font-display); font-weight: 700; font-size: 1.55rem; color: var(--cobalt); line-height: 1.15; }
+.meta .sub { display: block; font-size: .9rem; line-height: 1.3; }
+.meta li.appliances { grid-column: span 2; }
+.chip {
+  display: inline-block; margin: .3rem .35rem 0 0; padding: .2rem .7rem;
+  border: 2px solid var(--cobalt); border-radius: 999px; font-size: .95rem; font-weight: 700; background: var(--cream);
+}
+@media (max-width: 560px) {
+  .meta { grid-template-columns: 1fr 1fr; }
+  .meta li { border-right: 0; border-bottom: 2px dashed var(--dot); }
+  .meta li.appliances { grid-column: 1 / -1; border-bottom: 0; }
+}
+
+/* ---------- Body layout: ingredients + steps ---------- */
+.cook {
+  display: grid; gap: calc(var(--gap) * 1.4);
+  grid-template-columns: 1fr;
+  margin-top: calc(var(--gap) * 1.6);
+}
+@media (min-width: 1000px) {
+  .cook { grid-template-columns: minmax(320px, 0.8fr) 1.6fr; align-items: start; }
+  .cook .ingredients { position: sticky; top: 1rem; }
+}
+.section-title { font-size: var(--fs-h2); font-weight: 800; display: flex; align-items: baseline; gap: .6rem; flex-wrap: wrap; margin-bottom: 1rem; }
+.section-title small { font-family: var(--font-body); font-size: 1rem; font-weight: 700; color: var(--tomato); }
+
+/* Ingredient checklist */
+.card {
+  background: var(--paper); border: var(--rim); border-radius: var(--radius);
+  box-shadow: var(--shadow); padding: clamp(1rem, .7rem + 1vw, 1.6rem);
+}
+.checklist { list-style: none; margin: 0; padding: 0; display: grid; gap: .25rem; }
+@media (min-width: 640px) and (max-width: 999px) { .checklist { grid-template-columns: 1fr 1fr; column-gap: 1rem; } }
+.checklist button {
+  all: unset; box-sizing: border-box; cursor: pointer; width: 100%;
+  display: flex; align-items: center; gap: .85rem;
+  padding: .65rem .5rem; min-height: 56px; border-radius: 14px;
+  font-size: var(--fs-body); line-height: 1.3;
+  -webkit-tap-highlight-color: transparent;
+}
+.checklist button:hover { background: var(--cream); }
+.checklist button:focus-visible { outline: 4px solid var(--mustard); }
+.checklist .box {
+  flex: none; width: 34px; height: 34px; border-radius: 50%;
+  border: 3px solid var(--cobalt); background: var(--paper);
+  display: grid; place-items: center; transition: background .15s, transform .15s;
+}
+.checklist .box::after { content: "✓"; color: var(--paper); font-weight: 700; font-size: 1.2rem; opacity: 0; }
+.checklist .qty { font-weight: 700; color: var(--cobalt); white-space: nowrap; }
+.checklist [aria-pressed="true"] .box { background: var(--sage); border-color: var(--sage); transform: scale(1.06); }
+.checklist [aria-pressed="true"] .box::after { opacity: 1; }
+.checklist [aria-pressed="true"] .text { text-decoration: line-through; text-decoration-thickness: 2px; opacity: .55; }
+.list-tools { display: flex; justify-content: space-between; align-items: center; gap: .5rem; flex-wrap: wrap; margin-top: 1rem; font-size: 1rem; }
+
+.btn {
+  font: inherit; font-size: 1rem; font-weight: 700; cursor: pointer;
+  color: var(--cobalt); background: var(--cream);
+  border: 2px solid var(--cobalt); border-radius: 999px; padding: .55rem 1.1rem; min-height: 44px;
+  box-shadow: 3px 3px 0 var(--cobalt);
+}
+.btn:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--cobalt); }
+.btn[aria-pressed="true"] { background: var(--cobalt); color: var(--paper); }
+
+/* Steps */
+.steps { list-style: none; margin: 0; padding: 0; display: grid; gap: calc(var(--gap) * 1.1); counter-reset: step; }
+.step {
+  counter-increment: step;
+  display: grid; grid-template-columns: auto 1fr; gap: 0 clamp(.9rem, .5rem + 1.5vw, 1.6rem);
+  align-items: start;
+}
+.step::before {
+  content: counter(step);
+  width: clamp(64px, 50px + 3vw, 88px); aspect-ratio: 1; border-radius: 50%;
+  display: grid; place-items: center;
+  font-family: var(--font-display); font-weight: 900; font-size: clamp(2rem, 1.5rem + 1.8vw, 2.9rem);
+  font-variation-settings: "SOFT" 100, "WONK" 1;
+  color: var(--paper); background: var(--cobalt);
+  box-shadow: inset 0 0 0 5px var(--cobalt), inset 0 0 0 8px var(--paper), 4px 4px 0 var(--tomato);
+  transition: background .2s;
+}
+.step-body { padding-top: .2rem; min-width: 0; }
+.step h3 { font-size: clamp(1.35rem, 1.1rem + 1vw, 1.8rem); font-weight: 700; margin-bottom: .35rem; }
+.step p { font-size: var(--fs-step); line-height: 1.5; margin: 0; max-width: 40ch; }
+.step-photo { margin: 1rem 0 0; border: var(--rim); border-radius: 16px; overflow: hidden; box-shadow: var(--shadow-sm); max-width: 520px; background: var(--paper); }
+.step-photo img { width: 100%; height: auto; aspect-ratio: 3 / 2; object-fit: cover; }
+.step-photo figcaption { font-size: .9rem; padding: .45rem .8rem; border-top: 2px solid var(--cobalt); }
+.step-done {
+  margin-top: .8rem; font-size: .95rem; padding: .4rem .9rem; min-height: 40px; box-shadow: 2px 2px 0 var(--cobalt);
+}
+.step.is-done::before { background: var(--sage); box-shadow: inset 0 0 0 5px var(--sage), inset 0 0 0 8px var(--paper), 4px 4px 0 var(--cobalt); content: "✓"; }
+.step.is-done p, .step.is-done h3 { opacity: .5; }
+
+/* ---------- Tip boxes ---------- */
+.tips { display: grid; gap: calc(var(--gap) * 1.2); margin-top: calc(var(--gap) * 1.6); }
+@media (min-width: 1000px) { .tips { grid-template-columns: 1fr 1fr; align-items: start; } }
+.tip {
+  position: relative; background: var(--paper); border: var(--rim); border-radius: var(--radius);
+  padding: 2.2rem clamp(1rem, .7rem + 1vw, 1.6rem) 1.3rem; box-shadow: var(--shadow);
+}
+.tip-label {
+  position: absolute; top: -1.05rem; left: 1.2rem;
+  font-weight: 700; font-size: .9rem; letter-spacing: .1em; text-transform: uppercase;
+  background: var(--mustard); color: var(--ink); border: 3px solid var(--cobalt); border-radius: 999px; padding: .25rem .9rem;
+}
+.tip--alt .tip-label { background: var(--tomato); color: var(--paper); }
+.tip h3 { font-size: clamp(1.4rem, 1.15rem + 1vw, 1.9rem); margin-bottom: .6rem; }
+.tip p { margin: 0 0 .7rem; }
+.tip .big { font-family: var(--font-display); font-weight: 900; font-size: clamp(2.6rem, 2rem + 2.5vw, 3.6rem); color: var(--tomato); line-height: 1; }
+.tip .facts { display: flex; gap: .6rem; flex-wrap: wrap; margin: .2rem 0 1rem; }
+.tip .fact { border: 2px solid var(--cobalt); border-radius: 14px; padding: .4rem .8rem; background: var(--cream); font-weight: 700; }
+.tip .fact b { display: block; font-family: var(--font-display); font-size: 1.6rem; color: var(--cobalt); line-height: 1.1; }
+.tip .tip-source { font-size: .95rem; border-top: 2px dashed var(--dot); padding-top: .7rem; margin-top: .4rem; }
+
+/* ---------- Footer / source ---------- */
+.source-foot { margin-top: calc(var(--gap) * 2); }
+.source-foot .dots { height: 28px; border-top: var(--rim); border-bottom: var(--rim); }
+.source-foot .wrap { padding-block: 1.4rem 2.4rem; font-size: 1.05rem; }
+.source-foot p { margin: .3rem 0; }
+.toolbar { display: flex; gap: .6rem; flex-wrap: wrap; margin-top: 1.2rem; }
+
+/* ---------- Index page ---------- */
+.masthead { border-bottom: var(--rim); }
+.masthead .dots { height: 40px; border-bottom: var(--rim); }
+.masthead .wrap { padding-block: clamp(1.2rem, .8rem + 1.6vw, 2.2rem); display: grid; gap: .4rem; }
+.masthead h1 { font-size: clamp(2.8rem, 1.8rem + 3.6vw, 4.8rem); font-weight: 900; letter-spacing: -0.02em; }
+.masthead h1 em { color: var(--tomato); font-style: italic; font-weight: 700; }
+.masthead p { margin: 0; max-width: 46ch; }
+.index-head { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; flex-wrap: wrap; margin: var(--gap) 0 1rem; }
+.index-head h2 { font-size: var(--fs-h2); }
+.count { font-weight: 700; color: var(--tomato); }
+
+.cards {
+  list-style: none; margin: 0 0 calc(var(--gap) * 2); padding: 0;
+  display: grid; gap: calc(var(--gap) * 1.2);
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 290px), 1fr));
+}
+.recipe-card {
+  display: flex; flex-direction: column; height: 100%;
+  background: var(--paper); border: var(--rim); border-radius: var(--radius); overflow: hidden;
+  box-shadow: var(--shadow); text-decoration: none; color: var(--ink);
+  transition: transform .15s, box-shadow .15s;
+}
+.recipe-card:hover { transform: translate(-2px, -2px); box-shadow: 8px 8px 0 var(--tomato); color: var(--ink); }
+.recipe-card .photo { aspect-ratio: 4 / 3; border-bottom: var(--rim); overflow: hidden; position: relative; }
+.recipe-card .photo img { width: 100%; height: 100%; object-fit: cover; }
+.hero-photo img, .recipe-card .photo img { height: 100%; }
+.recipe-card .tag {
+  position: absolute; left: .8rem; top: .8rem; font-size: .8rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+  background: var(--tomato); color: var(--paper); border: 2px solid var(--paper); border-radius: 999px; padding: .2rem .7rem;
+}
+.recipe-card .body { padding: 1rem 1.2rem 1.2rem; display: grid; gap: .5rem; }
+.recipe-card h3 { font-size: 1.9rem; font-weight: 800; }
+.recipe-card .facts { display: flex; flex-wrap: wrap; gap: .35rem; font-size: .9rem; font-weight: 700; }
+.recipe-card .facts span { border: 2px solid var(--cobalt); border-radius: 999px; padding: .05rem .55rem; background: var(--cream); }
+
+.placeholder {
+  height: 100%; min-height: 320px; display: grid; place-items: center; text-align: center; padding: 1.5rem;
+  border: 3px dashed var(--cobalt); border-radius: var(--radius); color: var(--cobalt); opacity: .55;
+  font-family: var(--font-display); font-size: 1.4rem; font-weight: 600;
+  background-image: radial-gradient(circle, var(--dot) 0 3px, transparent 3.5px); background-size: 26px 26px;
+}
+.placeholder span { background: var(--cream); padding: .3rem .8rem; border-radius: 12px; }
+
+.site-foot { border-top: var(--rim); background: var(--paper); }
+.site-foot .wrap { padding-block: 1.2rem; font-size: 1rem; }
+
+/* ---------- Embedded in an iframe (e.g. Notion embed on iPad) ---------- */
+.frame-open { display: none; }
+html.is-framed .frame-open {
+  display: flex; justify-content: center; padding: .4rem var(--gap);
+  background: var(--cobalt); border-bottom: var(--rim); position: sticky; top: 0; z-index: 10;
+}
+.frame-open .btn--primary {
+  display: inline-flex; align-items: center; gap: .4rem; text-decoration: none;
+  background: var(--tomato); color: var(--paper); border: 3px solid var(--paper); border-radius: 999px;
+  padding: .45rem 1.2rem; font-weight: 700; font-size: 1.05rem; box-shadow: 3px 3px 0 rgba(0,0,0,.35);
+}
+html.is-framed [data-wakelock] { display: none !important; }
+/* Short frames/windows: a sticky ingredient column taller than the viewport would be cut off. */
+@media (max-height: 760px) { .cook .ingredients { position: static; } }
+html.is-framed .cook .ingredients { position: static; }
+/* In a short embed frame keep the hero photo from filling the whole view. */
+html.is-framed .hero-photo { aspect-ratio: auto; height: clamp(180px, 50vh, 460px); }
+
+/* ---------- Print ---------- */
+@media print {
+  .frame-open, .toolbar, .list-tools, .step-done, .topbar .backlink { display: none !important; }
+  .card, .tip, .hero-photo, .meta { box-shadow: none; }
+  .dots { background: none; border: 0; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
