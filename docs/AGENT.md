@@ -68,7 +68,7 @@ index.html                    GENERATED recipe list + filters
 images/thumbs/<slug>.jpg      index cards 480×360 (tools/images.py)
 images/covers/<slug>.jpg      Notion covers ≤1200 px (tools/images.py)
 tools/
-  vocab.py                    vocabularies: labels CS, the six appliances, difficulty, ratings, people, tints, site URL
+  vocab.py                    vocabularies: labels CS, the ten appliances, difficulty, ratings, people, tints, site URL
   recipe_md.py                Markdown + front-matter parser/writer
   apply_json.py  build.py  build_index.py   the three Action steps
   sync.py                     Notion → data/*.json, commit + push
@@ -137,7 +137,7 @@ Name (English title), Czech name (shown in the index filter), At home (checkbox;
 made: plain flour ≠ semi-coarse flour; pancetta/mangalica → Bacon; yolks → Eggs; sunflower oil → Cooking oil. When you add a
 recipe, create the missing ingredient rows and leave At home unticked.
 
-### Appliances DB: exactly six. Ask Braňo before adding any.
+### Appliances DB: exactly ten. Ask Braňo before adding any.
 
 | Name | key | Czech |
 |---|---|---|
@@ -147,9 +147,16 @@ recipe, create the missing ingredient rows and leave At home unticked.
 | Microwave | microwave | Mikrovlnka |
 | Oven (grill + steam) | oven | Trouba (gril + pára) |
 | Meat probe | meat-probe | Sonda do masa (jen v troubě) |
+| Halušky grater | halusky-grater | Haluškár |
+| KitchenAid stand mixer | kitchenaid | Kuchyňský robot KitchenAid (with interchangeable attachments / nástavce) |
+| Pressure cooker | pressure-cooker | Tlakový hrnec |
+| Immersion blender | immersion-blender | Ponorný mixer |
 
 **The meat probe is wired to the oven and works only there.** Never suggest it for a pan, a pot or the air fryer. Other tools
-(grater, whisk, …) may appear in the original text, but they are not Appliances. The mapping and its order live in `tools/vocab.py APPLIANCES`.
+(whisk, ladle, …) may appear in the original text, but they are not Appliances. The mapping and its order live in `tools/vocab.py APPLIANCES`.
+To add an appliance (only after Braňo asks): create the Notion row (Name, Czech name, Key), add it to `tools/vocab.py APPLIANCES`,
+and add an icon `--i-<key>` plus `.appliance[data-value="<key>"]` in `themes/_shared/icons.css`. An unknown key falls back to the pot icon.
+Link a recipe to an appliance only when the recipe text actually uses it (e.g. bryndzové halušky → Halušky grater, „sitko na halušky“).
 
 ## Sync: Notion → data/*.json
 
@@ -174,7 +181,7 @@ NOTION_TOKEN=secret_… NOTION_RECIPES_DB=f8d3a6ad1aee4910ac9e467957aa884f pytho
 Options: `--repo PATH` · `--no-pull` (skip the initial `git pull --rebase --autostash`) · `--no-commit` (write files only) ·
 `--no-push` · `--dry-run` (list the files that would change; writes nothing) · `--report FILE`.
 Output: "No changes — nothing committed." when Notion is unchanged. Warnings cover a missing Page URL, a data file without
-Markdown, appliances that are not among the six, and a Notion row that was deleted (its data file is left in place, never auto-deleted).
+Markdown, appliances that are not among the ten, and a Notion row that was deleted (its data file is left in place, never auto-deleted).
 On the assistant's box, the working copy is `/workspace/kucharka-recepty` and the dumps live in `/workspace/kucharka-sync/`.
 
 Slug matching: an existing data file is matched by `notion_id`, else by the slug in Notion's `Page` URL, else a new slug is
@@ -198,7 +205,7 @@ the Action do it; both give identical bytes.
    You may leave the synced keys empty; they fill in from Notion.
 3. **Photos:** `python3 tools/images.py <slug>` → `content/img/…`, thumb, cover.
 4. **Notion row** in Recipes: Title, Theme (smalt), Total time, Difficulty, Labels, Main ingredient, Source, and
-   **Page = `https://branovaclav.github.io/kucharka-recepty/recipes/<slug>.html`**. Relate Appliances (from the six only) and
+   **Page = `https://branovaclav.github.io/kucharka-recepty/recipes/<slug>.html`**. Relate Appliances (from the ten only) and
    Ingredients (create the missing ones). Set the cover to `…/images/covers/<slug>.jpg`. The body is the embed + link above.
    **Leave Overall, the person ratings, Last prepared and Notes empty.**
 5. **Data JSON:** run the sync (it creates `data/<slug>.json`). Or commit everything together: run the sync with `--no-commit`,
@@ -232,7 +239,7 @@ replace it with a meta-refresh stub. Push.
 2. Copy the **original text verbatim**: ingredients, steps and the author's tips. No rewriting, no translating Slovak, no "fixing".
 3. Put our additions only in the marked boxes (Náš tip / náš doplněk / Na okraj / Pozor).
 4. Credit the source and author **at the top and the bottom** of the page, and credit the photos.
-5. Our tips may use only the six appliances. The meat probe is oven-only.
+5. Our tips may use only the ten appliances. The meat probe is oven-only.
 6. Keep the page weight around 150–300 KB (hero 720 px q86, step photos 720 px q70).
 7. Keep `noindex` and `robots.txt`. This is a private family site on a public host.
 8. Ratings, last prepared and notes hold **real data only**. Never invent them.
@@ -258,7 +265,7 @@ Use Playwright for layout: no horizontal overflow at 375, 393, 820×1180 and 118
 
 - Do not rewrite, translate or “improve” author text.
 - Do not invent ratings, last prepared or notes.
-- Do not add appliances beyond the six without asking Braňo.
+- Do not add appliances beyond the ten without asking Braňo.
 - Do not hand-edit generated files (`recipes/*.html`, `index.html`, `themes/*/preview.html`) or the synced front-matter keys.
 - Do not touch `designs/`.
 - Do not push to any other repository.

@@ -34,7 +34,7 @@ Markdown, and Notion never touches them.
 | `difficulty` | **Notion** | `Easy · Medium · Hard` |
 | `main_ingredient` | **Notion** | `Poultry · Pork & beef · Minced meat · Pasta / rice / potatoes · Fish & seafood · Vegetarian` |
 | `labels` | **Notion** Labels | English option names (Czech display names are in `tools/vocab.py LABELS_CS`) |
-| `appliances` | **Notion** Appliances | English names of the six owned appliances (`tools/vocab.py APPLIANCES`) |
+| `appliances` | **Notion** Appliances | English names of the owned appliances (`tools/vocab.py APPLIANCES`) |
 | `ingredients` | **Notion** Ingredients | `{name: English, cs: Czech}`; drives the index ingredient filter only |
 | `ratings` | **Notion** Overall, Braňo, Zuzka, Andrej, Tomáš, Lukáš | `Loved · OK · Disliked · ""` |
 | `last_prepared` | **Notion** Last prepared | `YYYY-MM-DD` or `""` |
@@ -106,7 +106,7 @@ The main credit line is generated from `source:` in the front matter.
 
 ## 3. Our tips: kitchen rules
 
-Tips we add may use only the family kitchen: gas stove, air fryer, rice cooker, microwave, oven (grill + steam), meat probe.
+Tips we add may use only the family kitchen: gas stove, air fryer, rice cooker, microwave, oven (grill + steam), meat probe, halušky grater, KitchenAid stand mixer (with attachments), pressure cooker, immersion blender.
 **The meat probe is wired to the oven and works only for oven cooking.** Never suggest it for a pan, a pot or the air fryer.
 Ask Braňo before introducing any other equipment.
 

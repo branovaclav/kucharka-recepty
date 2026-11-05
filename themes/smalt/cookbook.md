@@ -947,7 +947,7 @@ Every HTML file keeps `<meta name="robots" content="noindex,nofollow">`; `robots
 3. Anything we add lives only in a clearly marked box. In Markdown that is `::: our-tip` (in a step → `@c:our-inline`, in Tipy → `@c:tip-ours`),
    `::: note` (`@c:sidenote`) or `::: warning` (`@c:warning`). The author's tips are `::: tip` (`@c:tip-source`).
 4. The source is credited with author and link **at the top** (`@c:topbar`) **and at the bottom** (`@c:source-foot`), from front matter `source:`. Photos are credited too.
-5. Our tips may use only the family kitchen: gas stove, air fryer, rice cooker, microwave, oven (grill + steam), meat probe.
+5. Our tips may use only the family kitchen: gas stove, air fryer, rice cooker, microwave, oven (grill + steam), meat probe, halušky grater, KitchenAid stand mixer (with attachments), pressure cooker, immersion blender.
    **The meat probe is wired to the oven and works only for oven cooking.** Never suggest it for a pan, a pot or the air fryer.
    Other tools may be mentioned only where the original recipe uses them. New equipment needs Braňo's confirmation.
 6. Page weight is ~150–300 KB (hero 720 px q86, step photos 720 px q70).
@@ -1031,5 +1031,5 @@ link; ratings, Last prepared and Notes left empty) → sync → push → verify 
 ## O9. Notion admin (English)
 
 Top page „Family Cookbook“ → Recipes (views: Gallery, Under 45 min, Table; select **Theme** smalt/len/sesit), Ingredients
-(At home, Category, Czech name, kids' likes) and Appliances (the six above; Key = icon key). The Recipes formula „Have at home“ =
+(At home, Category, Czech name, kids' likes) and Appliances (the ten in `docs/AGENT.md`; Key = icon key). The Recipes formula „Have at home“ =
 at-home ingredients / all ingredients.
