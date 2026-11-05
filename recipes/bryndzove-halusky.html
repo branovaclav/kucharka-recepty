@@ -75,6 +75,7 @@
  "notes": "",
  "notion_id": "40e3c877b1728161ab4fe578091371b7",
  "notion_url": "https://app.notion.com/p/40e3c877b1728161ab4fe578091371b7",
+ "own": false,
  "rating_overall": "",
  "ratings": {
   "andrej": "",
@@ -133,6 +134,9 @@ body[data-tint="veg"]           { --tint: #E0ECDA; --tint-strong: #99BB8E; --tin
   --i-kitchenaid: url("data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22><path d=%22M4 21h15M7 21V10%22/><path d=%22M5 4.5h10a3.2 3.2 0 0 1 0 6.4H7%22/><path d=%22M14 11v3M10 14.5h8l-1.2 4.5h-5.6z%22/></svg>");
   --i-pressure-cooker: url("data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22><path d=%22M4.5 11h15v5.5a4 4 0 0 1-4 4h-7a4 4 0 0 1-4-4z%22/><path d=%22M3 11h18M6.5 11a5.5 3 0 0 1 11 0M12 8V5.5M19 9.5l2.5-2%22/></svg>");
   --i-immersion-blender: url("data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22><rect x=%229%22 y=%222%22 width=%226%22 height=%229%22 rx=%222%22/><path d=%22M12 11v5.5M8.5 16.5h7l-1.2 4.5H9.7z%22/></svg>");
+  --i-outdoor-grill: url("data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22><path d=%22M3.5 9.5h17a8.5 6.5 0 0 1-17 0zM8 15.2 6 21M16 15.2l2 5.8M12 16v5M9 3.5c-.8 1 .8 2-0 3M15 3.5c-.8 1 .8 2 0 3%22/></svg>");
+  --i-contact-grill: url("data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22><rect x=%223%22 y=%2214%22 width=%2216%22 height=%225%22 rx=%221.5%22/><path d=%22M4 12 17.5 6.3a1.5 1.5 0 0 1 2 .9l.4 1.1L5.3 13.7M19 16.5h2.5%22/></svg>");
+  --i-heart: url("data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22><path d=%22M12 20s-7.5-4.6-7.5-10.2A4.1 4.1 0 0 1 12 7.4a4.1 4.1 0 0 1 7.5 2.4C19.5 15.4 12 20 12 20z%22/></svg>");
   --i-pot: url("data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22><path d=%22M4.5 10h15v6a4 4 0 0 1-4 4h-7a4 4 0 0 1-4-4z%22/><path d=%22M2 10h20M9 6.5c0-1.2 1-1.2 1-2.5M14 6.5c0-1.2 1-1.2 1-2.5%22/></svg>");
   --i-loved: url("data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22><path d=%22M12 21s-8-4.9-10-10A5.3 5.3 0 0 1 12 7.2 5.3 5.3 0 0 1 22 11c-2 5.1-10 10-10 10z%22/></svg>");
   --i-ok: url("data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23000%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22><circle cx=%2212%22 cy=%2212%22 r=%229.5%22/><path d=%22M8 15h8%22/><circle cx=%229%22 cy=%229.5%22 r=%22.6%22 fill=%22%23000%22/><circle cx=%2215%22 cy=%229.5%22 r=%22.6%22 fill=%22%23000%22/></svg>");
@@ -158,6 +162,8 @@ body[data-tint="veg"]           { --tint: #E0ECDA; --tint-strong: #99BB8E; --tin
 .appliance[data-value="kitchenaid"] { --icon: var(--i-kitchenaid); }
 .appliance[data-value="pressure-cooker"] { --icon: var(--i-pressure-cooker); }
 .appliance[data-value="immersion-blender"] { --icon: var(--i-immersion-blender); }
+.appliance[data-value="outdoor-grill"] { --icon: var(--i-outdoor-grill); }
+.appliance[data-value="contact-grill"] { --icon: var(--i-contact-grill); }
 /* rating values: loved | ok | disliked | "" (unrated) */
 .rating { --icon: var(--i-unrated); }
 .rating[data-value="loved"] { --icon: var(--i-loved); }
@@ -392,6 +398,12 @@ html.is-framed .hero-photo { aspect-ratio: auto; height: clamp(180px, 50vh, 460p
 @media print { .frame-open, .toolbar, .list-tools, .step-done, .backlink { display: none !important; } .card, .tip, .hero-photo, .meta { box-shadow: none; } }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
 
+/* @c:own-badge — „Náš recept“: our own family recipe (front matter own: true). Tomato pill, cobalt rim, hard shadow, heart. */
+.own-badge { display: inline-flex; align-items: center; gap: .35rem; padding: .15rem .75rem .15rem .55rem; border: 2px solid var(--cobalt); border-radius: 999px;
+  background: var(--tomato); color: var(--paper); font-weight: 700; font-size: .85rem; letter-spacing: .1em; text-transform: uppercase; line-height: 1.4; vertical-align: middle; }
+.own-badge::before { content: ""; width: 1em; height: 1em; background: currentColor; -webkit-mask: var(--i-heart) center / contain no-repeat; mask: var(--i-heart) center / contain no-repeat; }
+.own-badge--hero { margin: .9rem 0 0; font-size: 1rem; padding: .3rem 1rem .3rem .75rem; border-width: 3px; box-shadow: var(--shadow-sm); transform: rotate(-2deg); }
+
 /* @c:phone */
 /* iPhone + safe-area layer — keep it LAST in the <style> so it wins */
 html, body { overflow-x: clip; }   /* nothing may ever cause sideways scroll */
@@ -428,6 +440,10 @@ html.is-framed .frame-open { padding-top: max(.5rem, env(safe-area-inset-top)); 
 .src-rating small { overflow-wrap: anywhere; }
 .appliances:empty::before, .labels:empty { display: none; }
 .step-body > p:first-child { padding-top: .9rem; }   /* step without a heading: align text with the number disc */
+
+/* @c:step-list — "- " bullet list inside a step (e.g. approximate times per appliance) */
+.step-list { margin: .6rem 0 .9rem; padding-left: 1.3em; }
+.step-list li + li { margin-top: .35rem; }
 
   </style>
 </head>

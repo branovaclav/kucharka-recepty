@@ -942,12 +942,12 @@ Every HTML file keeps `<meta name="robots" content="noindex,nofollow">`; `robots
 
 ## O2. Content rules (non-negotiable)
 
-1. Only human-written, popular, well-rated Czech/Slovak recipes. Beginner- and kid-friendly.
+1. Only human-written, popular, well-rated Czech/Slovak recipes. Beginner- and kid-friendly. **Exception: our own family recipes** (`own: true`, written by us in Slovak, „Náš recept“ badge, `@c:own-badge`); rules 2 and 4 do not apply to them.
 2. The **original text is copied verbatim**: ingredients, steps and the author's tips. No rewriting, no translation, no "fixing" Slovak.
 3. Anything we add lives only in a clearly marked box. In Markdown that is `::: our-tip` (in a step → `@c:our-inline`, in Tipy → `@c:tip-ours`),
    `::: note` (`@c:sidenote`) or `::: warning` (`@c:warning`). The author's tips are `::: tip` (`@c:tip-source`).
 4. The source is credited with author and link **at the top** (`@c:topbar`) **and at the bottom** (`@c:source-foot`), from front matter `source:`. Photos are credited too.
-5. Our tips may use only the family kitchen: gas stove, air fryer, rice cooker, microwave, oven (grill + steam), meat probe, halušky grater, KitchenAid stand mixer (with attachments), pressure cooker, immersion blender.
+5. Our tips may use only the family kitchen: gas stove, air fryer, rice cooker, microwave, oven (grill + steam), meat probe, halušky grater, KitchenAid stand mixer (with attachments), pressure cooker, immersion blender, outdoor grill, contact grill.
    **The meat probe is wired to the oven and works only for oven cooking.** Never suggest it for a pan, a pot or the air fryer.
    Other tools may be mentioned only where the original recipe uses them. New equipment needs Braňo's confirmation.
 6. Page weight is ~150–300 KB (hero 720 px q86, step photos 720 px q70).
@@ -985,7 +985,26 @@ With no overall rating either, it shows „Zatím nehodnotil“ (Zuzka: „Zatí
 Empty notes show `<p class="notes-empty">Zatím bez poznámek.</p>`.
 
 ### Icons
-`--i-rice-cooker` and `--i-meat-probe` in `_shared/icons.css`, mapped by `.appliance[data-value="rice-cooker|meat-probe"]`.
+One `--i-<key>` per appliance in `_shared/icons.css` (rice-cooker, meat-probe, halusky-grater, kitchenaid, pressure-cooker, immersion-blender, outdoor-grill, contact-grill, …), mapped by `.appliance[data-value="<key>"]`; plus `--i-heart` for `@c:own-badge`.
+
+### `@c:own-badge` — „Náš recept“ badge (our own recipe)
+
+Shown only when the recipe Markdown has `own: true` (front matter, Markdown-only, not a Notion field): our own family
+recipe, written by us, not taken from any source. Smalt: tomato pill, 2 px cobalt rim, heart icon (`--i-heart`); the hero variant is bigger, 3 px rim, hard shadow, rotated −2°.
+The same page then has no external source: the top credit reads „náš rodinný recept · <author>“, there is no source-rating
+line, the footer starts with the badge + „Vlastní rodinný recept (autor …)“, and `tip--ours` boxes drop the
+„Doplněno námi — není součástí původního receptu“ line (the whole recipe is ours). Photo credit: `## Zdroj` in the Markdown.
+
+```html
+<!-- @c:own-badge -->
+<p class="own-badge own-badge--hero" lang="cs">Náš recept</p>   <!-- in .hero-text, between the labels and the <h1> -->
+<!-- /@c:own-badge -->
+<span class="own-badge">Náš recept</span>                         <!-- inline: source footer; index card (.rcard .own-badge, themes/smalt/index.css) -->
+```
+
+### `@c:step-list`
+`- ` lines inside a step (`## Postup`) render as `<ul class="step-list"><li>…</li></ul>` (shared style in `_shared/official.css`),
+e.g. approximate times per appliance. Any other unknown block inside a step fails the build.
 
 ## O5. Index (`index.html`)
 
@@ -1031,5 +1050,5 @@ link; ratings, Last prepared and Notes left empty) → sync → push → verify 
 ## O9. Notion admin (English)
 
 Top page „Family Cookbook“ → Recipes (views: Gallery, Under 45 min, Table; select **Theme** smalt/len/sesit), Ingredients
-(At home, Category, Czech name, kids' likes) and Appliances (the ten in `docs/AGENT.md`; Key = icon key). The Recipes formula „Have at home“ =
+(At home, Category, Czech name, kids' likes) and Appliances (the twelve in `docs/AGENT.md`; Key = icon key). The Recipes formula „Have at home“ =
 at-home ingredients / all ingredients.

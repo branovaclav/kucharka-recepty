@@ -1,0 +1,97 @@
+{
+ "appliances": [
+  "Gas stove",
+  "Air fryer",
+  "Outdoor grill",
+  "Contact grill"
+ ],
+ "difficulty": "Easy",
+ "ingredients": [
+  {
+   "cs": "Slanina",
+   "name": "Bacon"
+  },
+  {
+   "cs": "Mletý pepř",
+   "name": "Black pepper"
+  },
+  {
+   "cs": "Čedar",
+   "name": "Cheddar"
+  },
+  {
+   "cs": "Olej",
+   "name": "Cooking oil"
+  },
+  {
+   "cs": "Vejce",
+   "name": "Eggs"
+  },
+  {
+   "cs": "Mleté hovězí maso",
+   "name": "Ground beef"
+  },
+  {
+   "cs": "Hamburgerové bulky",
+   "name": "Hamburger buns"
+  },
+  {
+   "cs": "Kečup",
+   "name": "Ketchup"
+  },
+  {
+   "cs": "Hlávkový salát",
+   "name": "Lettuce"
+  },
+  {
+   "cs": "Majonéza",
+   "name": "Mayonnaise"
+  },
+  {
+   "cs": "Hořčice",
+   "name": "Mustard"
+  },
+  {
+   "cs": "Cibule",
+   "name": "Onion"
+  },
+  {
+   "cs": "Kyselé okurky",
+   "name": "Pickles"
+  },
+  {
+   "cs": "Sůl",
+   "name": "Salt"
+  },
+  {
+   "cs": "Tatarská omáčka",
+   "name": "Tartar sauce"
+  },
+  {
+   "cs": "Rajčata",
+   "name": "Tomatoes"
+  }
+ ],
+ "labels": [
+  "Quick",
+  "Beginner"
+ ],
+ "last_prepared": "",
+ "main_ingredient": "Minced meat",
+ "notes": "",
+ "notion_id": "40f3c877b172813dbff8e3a596fae202",
+ "notion_url": "https://app.notion.com/p/40f3c877b172813dbff8e3a596fae202",
+ "page_url": "https://branovaclav.github.io/kucharka-recepty/recipes/hamburger.html",
+ "ratings": {
+  "andrej": "Loved",
+  "brano": "Loved",
+  "lukas": "Loved",
+  "overall": "Loved",
+  "tomas": "OK",
+  "zuzka": "OK"
+ },
+ "source_url": "",
+ "theme": "smalt",
+ "title": "Hamburger",
+ "total_time": 30
+}

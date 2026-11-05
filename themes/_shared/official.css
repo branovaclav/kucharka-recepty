@@ -10,3 +10,7 @@
 .src-rating small { overflow-wrap: anywhere; }
 .appliances:empty::before, .labels:empty { display: none; }
 .step-body > p:first-child { padding-top: .9rem; }   /* step without a heading: align text with the number disc */
+
+/* @c:step-list — "- " bullet list inside a step (e.g. approximate times per appliance) */
+.step-list { margin: .6rem 0 .9rem; padding-left: 1.3em; }
+.step-list li + li { margin-top: .35rem; }

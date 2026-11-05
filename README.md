@@ -42,7 +42,7 @@ The details are in [docs/AGENT.md](docs/AGENT.md#how-to-add-a-recipe-end-to-end)
 
 The family owns only these appliances: gas stove, air fryer, rice cooker, microwave, oven (grill + steam), the
 **meat probe (oven only, because it is wired to the oven)**, a halušky grater (haluškár), a KitchenAid stand mixer with
-attachments, a pressure cooker and an immersion blender.
+attachments, a pressure cooker, an immersion blender, an outdoor grill and a contact grill.
 
 ## Credits
 

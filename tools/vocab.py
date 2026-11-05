@@ -8,7 +8,7 @@ INDEX_THEME = 'smalt'
 LABELS_CS = {"Quick": "Rychlé", "Beginner": "Pro začátečníky", "Kids' favourite candidate": "Tip pro děti", "Sweet": "Sladké",
              "Meatless": "Bez masa", "Weekend": "Na víkend", "To try": "Vyzkoušet", "Classic": "Klasika", "Fried": "Smažené",
              "Slovak": "Slovenské", "Italian": "Italské"}
-# The ten appliances the family owns (= Notion Appliances DB). Notion name → (icon key, Czech text). Ask Braňo before adding any.
+# The twelve appliances the family owns (= Notion Appliances DB). Notion name → (icon key, Czech text). Ask Braňo before adding any.
 APPLIANCES = {
     "Gas stove": ("gas-stove", "Plynový sporák"), "Air fryer": ("air-fryer", "Horkovzdušná fritéza"),
     "Rice cooker": ("rice-cooker", "Rýžovar"), "Microwave": ("microwave", "Mikrovlnka"),
@@ -17,7 +17,9 @@ APPLIANCES = {
     "Halušky grater": ("halusky-grater", "Haluškár"),
     "KitchenAid stand mixer": ("kitchenaid", "Kuchyňský robot KitchenAid"),  # with interchangeable attachments (nástavce)
     "Pressure cooker": ("pressure-cooker", "Tlakový hrnec"),
-    "Immersion blender": ("immersion-blender", "Ponorný mixer")}
+    "Immersion blender": ("immersion-blender", "Ponorný mixer"),
+    "Outdoor grill": ("outdoor-grill", "Vonkajší gril"),
+    "Contact grill": ("contact-grill", "Kontaktný gril")}  # Braňo's "grill" = contact grill
 DIFFICULTY = {"Easy": ("easy", "Snadné"), "Medium": ("medium", "Střední"), "Hard": ("hard", "Náročné")}
 RATING = {"Loved": "loved", "OK": "ok", "Disliked": "disliked"}
 RATING_CS = {"loved": "Chutná", "ok": "Ujde", "disliked": "Nechutná"}

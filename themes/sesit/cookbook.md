@@ -934,6 +934,21 @@ html.is-framed .frame-open { padding-top: max(.5rem, env(safe-area-inset-top)); 
 }
 ```
 
+### 7.25 „Náš recept“ badge (our own recipe)  `@c:own-badge`
+
+Shown only when the recipe Markdown has `own: true` (front matter, Markdown-only, not a Notion field): our own family
+recipe, written by us, not taken from any source. Sešit: red rubber stamp (typewriter caps, `--red`, double rim on the hero variant, rotated), „♥“ prefix.
+The same page then has no external source: the top credit reads „náš rodinný recept · <author>“, there is no source-rating
+line, the footer starts with the badge + „Vlastní rodinný recept (autor …)“, and `tip--ours` boxes drop the
+„Doplněno námi — není součástí původního receptu“ line (the whole recipe is ours). Photo credit: `## Zdroj` in the Markdown.
+
+```html
+<!-- @c:own-badge -->
+<p class="own-badge own-badge--hero" lang="cs">Náš recept</p>   <!-- in .hero-text, between the labels and the <h1> -->
+<!-- /@c:own-badge -->
+<span class="own-badge">Náš recept</span>                         <!-- inline: source footer; index card (.rcard .own-badge, themes/smalt/index.css) -->
+```
+
 ## 8. New recipe page — checklist
 
 1. Copy this design's `kureci-rizek.html` → `recipes/<slug>.html` (keeps the full `<style>` and `<script>`).

@@ -40,6 +40,7 @@ Markdown, and Notion never touches them.
 | `last_prepared` | **Notion** Last prepared | `YYYY-MM-DD` or `""` |
 | `notes` | **Notion** Notes | free text, one paragraph per line |
 | `notion_id`, `notion_url`, `page_url` | **Notion** | identity / links |
+| `own` | md | `true` = **our own family recipe** („Náš recept“ badge, `@c:own-badge`). Markdown-only, not in Notion. Omit for sourced recipes. |
 | `source` | md | `{site, url, title, author, rating, rating_count, photo}`; credited at the top and the bottom of the page |
 | `hero` | md | `{image: "img/<file>.jpg", alt}` |
 | `servings` | md | `{count, unit}` (both shown verbatim) |
@@ -74,6 +75,8 @@ Paragraph text…
 
 ![alt text](img/rizek-step1.jpg "caption / photo credit")     ← step photo from content/img/
 
+- **Kontaktný gril:** 3–5 min   ← "- " lines = a bullet list inside the step (<ul class="step-list">)
+
 ::: our-tip                    ← „Náš tip“ inline line (ours)
 …
 :::
@@ -104,9 +107,19 @@ Paragraphs…
 Extra paragraphs appended to the source footer (e.g. a credit for the source of a variant).
 The main credit line is generated from `source:` in the front matter.
 
+## 2a. Own recipes (`own: true`)
+
+Our own family recipes (first one: `hamburger`) are not copied from anywhere, so the verbatim rule does not apply: we write
+the whole body ourselves, **in Slovak** (`lang: "sk"`). Front matter: `own: true`, `source: {site: "", url: "", title: "",
+author: "Braňo", rating: "", rating_count: "", photo: ""}`; credit the photo in `## Zdroj` with a link and the licence (e.g.
+`Foto: [Name na Unsplash](https://unsplash.com/photos/…) (Unsplash License, voľné použitie).`). The page then shows the
+„Náš recept“ badge (`@c:own-badge`) in the hero, the footer and on the index card, the top credit reads „náš rodinný recept ·
+Braňo“, and `::: our-tip` / `note` / `warning` boxes are rendered in the recipe language without the „není součástí původního
+receptu“ line. Free photos only: Unsplash/Pexels or similar with a licence that allows this use.
+
 ## 3. Our tips: kitchen rules
 
-Tips we add may use only the family kitchen: gas stove, air fryer, rice cooker, microwave, oven (grill + steam), meat probe, halušky grater, KitchenAid stand mixer (with attachments), pressure cooker, immersion blender.
+Tips we add may use only the family kitchen: gas stove, air fryer, rice cooker, microwave, oven (grill + steam), meat probe, halušky grater, KitchenAid stand mixer (with attachments), pressure cooker, immersion blender, outdoor grill, contact grill.
 **The meat probe is wired to the oven and works only for oven cooking.** Never suggest it for a pan, a pot or the air fryer.
 Ask Braňo before introducing any other equipment.
 

@@ -17,6 +17,7 @@ Hard rules:
 - Never rewrite the author's recipe text.
 - Do not touch `designs/`.
 - Do not push to any other repo.
-- Ask before adding appliances beyond the ten (list in `docs/AGENT.md`). The meat probe works only in the oven.
+- Ask before adding appliances beyond the twelve (list in `docs/AGENT.md`). The meat probe works only in the oven.
+- Own family recipes (`own: true` in the Markdown, „Náš recept“ badge) are written by us in **Slovak**; see `docs/AGENT.md § Own recipes`.
 - Keep ratings, last prepared and notes real data only.
 - Keep `noindex` and `robots.txt`.

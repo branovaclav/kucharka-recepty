@@ -224,6 +224,12 @@ html.is-framed .hero-photo { aspect-ratio: auto; height: clamp(180px, 50vh, 460p
 @media print { .frame-open, .toolbar, .list-tools, .step-done, .backlink { display: none !important; } .card, .tip, .hero-photo, .meta { box-shadow: none; } }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
 
+/* @c:own-badge — „Náš recept“: our own family recipe (front matter own: true). Tomato pill, cobalt rim, hard shadow, heart. */
+.own-badge { display: inline-flex; align-items: center; gap: .35rem; padding: .15rem .75rem .15rem .55rem; border: 2px solid var(--cobalt); border-radius: 999px;
+  background: var(--tomato); color: var(--paper); font-weight: 700; font-size: .85rem; letter-spacing: .1em; text-transform: uppercase; line-height: 1.4; vertical-align: middle; }
+.own-badge::before { content: ""; width: 1em; height: 1em; background: currentColor; -webkit-mask: var(--i-heart) center / contain no-repeat; mask: var(--i-heart) center / contain no-repeat; }
+.own-badge--hero { margin: .9rem 0 0; font-size: 1rem; padding: .3rem 1rem .3rem .75rem; border-width: 3px; box-shadow: var(--shadow-sm); transform: rotate(-2deg); }
+
 /* @c:phone */
 /* iPhone + safe-area layer — keep it LAST in the <style> so it wins */
 html, body { overflow-x: clip; }   /* nothing may ever cause sideways scroll */

@@ -11,7 +11,7 @@ FRONT_KEYS = [
     "total_time", "difficulty", "main_ingredient", "labels", "appliances", "ingredients",  # SYNCED
     "ratings", "last_prepared", "notes",                                        # SYNCED
     "notion_id", "notion_url", "page_url",                                      # SYNCED
-    "source", "hero", "servings", "time_note", "ingredients_note"]             # md-owned (never touched by sync)
+    "own", "source", "hero", "servings", "time_note", "ingredients_note"]      # md-owned (never touched by sync); own: true = our own recipe („Náš recept“)
 SYNCED = ["title", "theme", "tint", "total_time", "difficulty", "main_ingredient", "labels", "appliances", "ingredients",
           "ratings", "last_prepared", "notes", "notion_id", "notion_url", "page_url"]
 RATING_KEYS = ["overall", "brano", "zuzka", "andrej", "tomas", "lukas"]
@@ -118,6 +118,10 @@ def parse_body(body):
             kind = {"our-tip": "our-inline", "note": "sidenote", "warning": "warning"}.get(b[1])
             if not kind: raise ValueError(f'::: {b[1]} not allowed inside a step (use our-tip, note, warning)')
             step["items"].append((kind, [x[1] for x in b[3] if x[0] == 'p']))
+        elif b[0] == 'li':  # bullet list inside a step (consecutive "- " lines = one list)
+            if step["items"] and step["items"][-1][0] == 'ul': step["items"][-1][1].append(b[1])
+            else: step["items"].append(("ul", [b[1]]))
+        else: raise ValueError(f'{b[0]} not allowed inside a step (use paragraphs, "- " lists, images, ::: boxes)')
     for b in blocks(secs.get("tips", [])):
         if b[0] != 'box' or b[1] not in ('tip', 'our-tip'):
             raise ValueError(f'## Tipy may contain only "::: tip Title" / "::: our-tip Title" boxes, found {b[0]} {b[1] if len(b) > 1 else ""!r}')

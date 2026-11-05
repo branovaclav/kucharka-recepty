@@ -73,6 +73,10 @@ select { font: inherit; font-size: 1.05rem; width: 100%; min-height: 48px; paddi
 }
 .ix-notion:hover, .ix-notion:focus-visible { background: var(--paper); color: var(--cobalt); outline: none; }
 .ix-foot a { color: var(--cobalt); font-weight: 700; }
+/* @c:own-badge on index cards (same look as the recipe page, smalt) */
+.rcard .own-badge { justify-self: start; display: inline-flex; align-items: center; gap: .35rem; padding: .1rem .7rem .1rem .5rem; border: 2px solid var(--cobalt); border-radius: 999px;
+  background: var(--tomato); color: var(--paper); font-weight: 700; font-size: .8rem; letter-spacing: .1em; text-transform: uppercase; line-height: 1.4; }
+.rcard .own-badge::before { content: ""; width: 1em; height: 1em; background: currentColor; -webkit-mask: var(--i-heart) center / contain no-repeat; mask: var(--i-heart) center / contain no-repeat; }
 @media (max-width: 520px) {
   .ix-head-row { align-items: stretch; }
   .ix-notion { width: 100%; }

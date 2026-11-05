@@ -59,7 +59,7 @@ def canon(fm):
             "appliances": apps, "ingredients": sorted(fm['ingredients'], key=lambda x: x['name'].lower()),
             "rating_overall": V.RATING.get(r['overall'], ''), "ratings": {k: V.RATING.get(r[k], '') for k, _ in V.PEOPLE},
             "last_prepared": fm['last_prepared'], "notes": (fm['notes'] or '').strip(), "main_ingredient": fm['main_ingredient'],
-            "notion_id": fm['notion_id'], "notion_url": fm['notion_url'], "lang": fm.get('lang', 'cs'),
+            "notion_id": fm['notion_id'], "notion_url": fm['notion_url'], "lang": fm.get('lang', 'cs'), "own": bool(fm.get('own')),
             "source": {k: (fm.get('source') or {}).get(k, '') for k in ('site', 'url', 'title', 'author')}}
 
 # ---------- family regions (data-sync attributes kept as stable hooks) ----------
@@ -95,7 +95,7 @@ def ingredient(i):
     q = f'<span class="qty">{inline(i["qty"])}</span> ' if i['qty'] else ''
     return f'          <li><button type="button" aria-pressed="false"><span class="box"></span><span class="text">{q}{inline(i["text"])}</span></button></li>'
 
-def step(s):
+def step(s, OL='cs'):
     out = ['        <li class="step"><div class="step-body">']
     if s['h']: out.append(f'          <h3>{esc(s["h"])}</h3>')
     for it in s['items']:
@@ -105,18 +105,21 @@ def step(s):
             path = os.path.join(ROOT, 'content', it[2]); w, h = jpeg_size(path)
             out.append(f'          <figure class="step-photo">\n            <img src="{datauri(path)}" alt="{esc(it[1])}" loading="lazy" width="{w}" height="{h}">\n'
                        f'            <figcaption>{esc(it[3])}</figcaption>\n          </figure>')
+        elif k == 'ul':
+            lis = ''.join(f'\n            <li>{inline(x)}</li>' for x in it[1])
+            out.append(f'          <ul class="step-list">{lis}\n          </ul>')
         elif k == 'our-inline':
-            out.append(f'          <!-- @c:our-inline -->\n          <p class="our-inline" lang="cs"><span class="our-mark">Náš tip</span> {" ".join(inline(p) for p in it[1])}</p>\n          <!-- /@c:our-inline -->')
+            out.append(f'          <!-- @c:our-inline -->\n          <p class="our-inline" lang="{OL}"><span class="our-mark">Náš tip</span> {" ".join(inline(p) for p in it[1])}</p>\n          <!-- /@c:our-inline -->')
         elif k == 'sidenote':
             ps = ''.join(f'\n            <p>{inline(p)}</p>' for p in it[1])
-            out.append(f'          <!-- @c:sidenote -->\n          <aside class="sidenote" data-origin="ours" lang="cs">\n            <span class="sidenote-label">Na okraj · náš doplněk</span>{ps}\n          </aside>\n          <!-- /@c:sidenote -->')
+            out.append(f'          <!-- @c:sidenote -->\n          <aside class="sidenote" data-origin="ours" lang="{OL}">\n            <span class="sidenote-label">Na okraj · náš doplněk</span>{ps}\n          </aside>\n          <!-- /@c:sidenote -->')
         elif k == 'warning':
             ps = ''.join(f'\n            <p>{inline(p)}</p>' for p in it[1])
-            out.append(f'          <!-- @c:warning -->\n          <div class="warning" role="note" lang="cs">\n            <span class="warning-label">Pozor · náš doplněk</span>{ps}\n          </div>\n          <!-- /@c:warning -->')
+            out.append(f'          <!-- @c:warning -->\n          <div class="warning" role="note" lang="{OL}">\n            <span class="warning-label">Pozor · náš doplněk</span>{ps}\n          </div>\n          <!-- /@c:warning -->')
     out.append('          <button type="button" class="btn step-done" aria-pressed="false">Hotovo</button>\n        </div></li>')
     return '\n'.join(out)
 
-def tip(t, L):
+def tip(t, L, own=False):
     facts = ''.join(f'<span class="fact"><b>{inline(a)}</b>{inline(b)}</span>' for a, b in t['facts'])
     facts = f'\n      <div class="facts">{facts}</div>' if facts else ''
     ps = ''.join(f'\n      <p>{inline(p)}</p>' for p in t['p'])
@@ -124,8 +127,9 @@ def tip(t, L):
     if t['kind'] == 'source':
         return (f'    <!-- @c:tip-source -->\n    <aside class="tip tip--source" lang="{L}">\n      <span class="tip-label" lang="cs">Tip ze zdroje</span>\n'
                 f'      <h3 lang="cs">{esc(t["h"])}</h3>{big}{facts}{ps}\n      <p class="tip-source" lang="cs">{inline(t["source"])}</p>\n    </aside>\n    <!-- /@c:tip-source -->')
-    return (f'    <!-- @c:tip-ours -->\n    <aside class="tip tip--ours" lang="cs">\n      <span class="tip-label">Náš tip</span>\n      <h3>{esc(t["h"])}</h3>{big}{facts}{ps}\n'
-            f'      <p class="tip-source">Doplněno námi — není součástí původního receptu.</p>\n    </aside>\n    <!-- /@c:tip-ours -->')
+    OL, note = (L, '') if own else ('cs', '\n      <p class="tip-source">Doplněno námi — není součástí původního receptu.</p>')
+    return (f'    <!-- @c:tip-ours -->\n    <aside class="tip tip--ours" lang="{OL}">\n      <span class="tip-label"{' lang="cs"' if own else ''}>Náš tip</span>\n      <h3>{esc(t["h"])}</h3>{big}{facts}{ps}{note}\n'
+            f'    </aside>\n    <!-- /@c:tip-ours -->')
 
 def meta_json(meta): return '\n' + json.dumps(meta, ensure_ascii=False, indent=1, sort_keys=True).replace('</', '<\\/') + '\n  '
 
@@ -142,7 +146,12 @@ def page(slug, theme=None, self_href=None):
     rating = (f'\n        <p class="src-rating"><span class="stars" aria-hidden="true">★★★★★</span> {esc(src["rating"])} <small>({esc(src["rating_count"])}× hodnoceno na {esc(src["site"])})</small></p>'
               if src.get('rating') else f'\n        <p class="src-rating"><small>Recept z {esc(src["site"])} — bez hodnocení čtenářů</small></p>')
     people = '\n'.join(f'          <li><span class="who">{n}</span>{r_person(m, k)}</li>' for k, n in V.PEOPLE)
-    credit = f'<a href="{esc(src["url"])}" rel="noopener">{esc(src["site"])} — {esc(src["title"])}</a> · autor {esc(src["author"])}'
+    own = m['own']; OL = L if own else 'cs'
+    if own:  # our own family recipe (front matter own: true): no external source, „Náš recept“ badge (@c:own-badge)
+        rating = ''
+        credit = f'náš rodinný recept · {esc(src.get("author"))}'
+    else:
+        credit = f'<a href="{esc(src["url"])}" rel="noopener">{esc(src["site"])} — {esc(src["title"])}</a> · autor {esc(src["author"])}'
     foot_extra = ''.join(f'\n    <p>{inline(x)}</p>' for x in B['foot'])
     lede = '\n      '.join(f'<p class="lede" lang="{L}">{inline(p)}</p>' for p in B['lede'])
     sv = fm.get('servings') or {}
@@ -150,8 +159,17 @@ def page(slug, theme=None, self_href=None):
     serv = (f'\n    <li><span class="k">{serv_k}</span><span class="v">{esc(sv.get("count"))}</span><span class="sub" lang="{L}">{esc(sv.get("unit"))}</span></li>'
             if sv.get('count') else '')
     ingr = '\n'.join(ingredient(i) for i in B['ingredients'])
-    steps = '\n'.join(step(s) for s in B['steps'])
-    tips = '\n'.join(tip(x, L) for x in B['tips'])
+    steps = '\n'.join(step(s, OL) for s in B['steps'])
+    tips = '\n'.join(tip(x, L, own) for x in B['tips'])
+    if own:
+        badge = '<!-- @c:own-badge -->\n      <p class="own-badge own-badge--hero" lang="cs">Náš recept</p>\n      <!-- /@c:own-badge -->\n      '
+        foot_main = f'<p><span class="own-badge">Náš recept</span> <strong>Vlastní rodinný recept</strong> (autor {esc(src.get("author"))}). {esc(src.get("photo"))}</p>'
+        foot_ours = 'Tohle je náš vlastní recept, není převzatý z jiného zdroje. Rámečky <b>Náš tip</b> jsou naše praktické doplňky.'
+    else:
+        badge = ''
+        foot_main = (f'<p><strong>Zdroj receptu:</strong> <a href="{esc(src["url"])}" rel="noopener">{esc(src["title"])} na {esc(src["site"])}</a> '
+                     f'(autor {esc(src["author"])}). {esc(src.get("photo"))}</p>')
+        foot_ours = 'Části označené <b>Náš tip</b> / <b>náš doplněk</b> jsme doplnili sami, v původním receptu nejsou. Text receptu je převzatý beze změn.'
     href = self_href or f'{slug}.html'
     back = '../index.html' if not theme else '../../index.html'
     body = f'''<!-- @c:frame -->
@@ -163,7 +181,7 @@ def page(slug, theme=None, self_href=None):
 <header class="topbar">
   <div class="wrap">
     <a class="backlink" href="{back}">Všechny recepty</a>
-    <p class="credit">Zdroj: {credit}</p>
+    <p class="credit">{'' if own else 'Zdroj: '}{credit}</p>
   </div>
 </header>
 <!-- /@c:topbar -->
@@ -178,7 +196,7 @@ def page(slug, theme=None, self_href=None):
       <!-- @c:labels -->
       {r_labels(m)}
       <!-- /@c:labels -->
-      <h1 data-sync="title">{esc(m['title'])}</h1>
+      {badge}<h1 data-sync="title">{esc(m['title'])}</h1>
       {lede}
       <div class="hero-ratings">
         <p class="overall"><span class="overall-k">Rodina</span> {r_overall(m)}</p>{rating}
@@ -267,8 +285,8 @@ def page(slug, theme=None, self_href=None):
 <!-- @c:source-foot -->
 <footer class="source-foot">
   <div class="wrap">
-    <p><strong>Zdroj receptu:</strong> <a href="{esc(src['url'])}" rel="noopener">{esc(src['title'])} na {esc(src['site'])}</a> (autor {esc(src['author'])}). {esc(src.get('photo'))}</p>{foot_extra}
-    <p class="foot-ours">Části označené <b>Náš tip</b> / <b>náš doplněk</b> jsme doplnili sami, v původním receptu nejsou. Text receptu je převzatý beze změn.</p>
+    {foot_main}{foot_extra}
+    <p class="foot-ours">{foot_ours}</p>
     <p><a class="foot-back" href="{back}">← Zpět na všechny recepty</a></p>
   </div>
 </footer>

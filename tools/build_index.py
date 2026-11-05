@@ -16,7 +16,7 @@ def card(r):
         <a href="{esc(r['url'])}">
           <img src="{esc(r['thumb'])}" alt="" width="480" height="360" loading="lazy">
           <span class="rcard-body">
-            <span class="rcard-title">{esc(r['title'])}</span>
+            {'<span class="own-badge">Náš recept</span>' if r.get('own') else ''}<span class="rcard-title">{esc(r['title'])}</span>
             <span class="rcard-facts"><span class="fact-time">{fmt_minutes(r.get('total_time'))}</span><span class="difficulty" data-value="{esc(r.get('difficulty') or '')}"><span class="pips" aria-hidden="true"><i></i><i></i><i></i></span><span class="difficulty-text">{diff}</span></span></span>
             <span class="rating" data-value="{v}">{V.RATING_CS.get(v, 'Zatím nehodnoceno')}</span>
           </span>
@@ -29,7 +29,7 @@ def build():
         if not os.path.exists(os.path.join(ROOT, r['thumb'])): print(f'warning: missing {r["thumb"]} — run tools/images.py {r["slug"]}', file=sys.stderr)
     t = V.INDEX_THEME
     data = [{k: r.get(k) for k in ("slug", "title", "url", "thumb", "total_time", "difficulty", "labels", "appliances",
-                                    "ingredients", "rating_overall", "last_prepared", "tint", "theme")} for r in recs]
+                                    "ingredients", "rating_overall", "last_prepared", "tint", "theme", "own")} for r in recs]
     css = '\n'.join([rd(TH, t, 'fonts.css'), rd(TH, '_shared', 'tints.css'), rd(TH, '_shared', 'icons.css'), rd(TH, t, 'index.css')]
                     ).replace('url("fonts/', 'url("recipes/fonts/')
     tpl = rd(TH, t, 'index.template.html')
