@@ -14,8 +14,13 @@
 <body data-tint="pasta-rice">
   <header class="ix-head">
     <div class="wrap">
-      <h1>Rodinná kuchařka</h1>
-      <p>{{COUNT}} recepty · ověřené zdroje, původní text, naše tipy zvlášť označené</p>
+      <div class="ix-head-row">
+        <div class="ix-head-text">
+          <h1>Rodinná kuchařka</h1>
+          <p>{{COUNT}} recepty · ověřené zdroje, původní text, naše tipy zvlášť označené</p>
+        </div>
+        <a class="ix-notion" href="https://app.notion.com/p/40e3c877b172818686f5d1fe12709436">Správa v Notion</a>
+      </div>
     </div>
   </header>
   <main class="wrap">
@@ -40,7 +45,7 @@
     </ul>
     <p class="empty" id="empty" hidden>Žádný recept neodpovídá filtrům.</p>
   </main>
-  <footer class="ix-foot wrap"><p>Recepty jsou převzaté beze změn z uvedených zdrojů (odkaz na každé stránce). Hodnocení a poznámky jsou naše rodinné, z Notionu.</p></footer>
+  <footer class="ix-foot wrap"><p>Recepty jsou převzaté beze změn z uvedených zdrojů (odkaz na každé stránce). Hodnocení a poznámky jsou naše rodinné — <a href="https://app.notion.com/p/40e3c877b172818686f5d1fe12709436">Správa v Notion</a>.</p></footer>
   <script type="application/json" id="recipes-data">{{DATA}}</script>
   <script>
 (function () {

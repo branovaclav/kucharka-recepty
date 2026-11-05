@@ -59,3 +59,21 @@ select { font: inherit; font-size: 1.05rem; width: 100%; min-height: 48px; paddi
 .rating[data-value="disliked"] { color: var(--cobalt); background: #e6ecf7; }
 .empty { margin-top: 1.2rem; padding: 1rem 1.2rem; background: var(--paper); border: 2px dashed var(--tomato); border-radius: 14px; font-weight: 700; }
 .ix-foot { margin-top: calc(var(--gap) * 2); padding-block: 1.2rem 2.4rem; font-size: 1rem; }
+
+/* Notion admin link — kept in the template so sync regenerations preserve it */
+.ix-head-row { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: .9rem 1.2rem; }
+.ix-head-text { flex: 1 1 14rem; min-width: 0; }
+.ix-notion {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-height: 44px; padding: .55rem 1rem;
+  border: 2px solid var(--paper); border-radius: 999px;
+  color: var(--paper); background: transparent;
+  font-family: var(--font-body); font-weight: 700; font-size: 1rem;
+  text-decoration: none; white-space: nowrap;
+}
+.ix-notion:hover, .ix-notion:focus-visible { background: var(--paper); color: var(--cobalt); outline: none; }
+.ix-foot a { color: var(--cobalt); font-weight: 700; }
+@media (max-width: 520px) {
+  .ix-head-row { align-items: stretch; }
+  .ix-notion { width: 100%; }
+}
