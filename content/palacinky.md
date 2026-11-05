@@ -29,7 +29,7 @@ ratings:
   tomas: ""
   lukas: ""
 last_prepared: ""
-notes: ""
+notes: "TEST waterfall — automatický test, bude hned odstraněn."
 notion_id: "40e3c877b17281149e01d25156f0c006"
 notion_url: "https://app.notion.com/p/40e3c877b17281149e01d25156f0c006"
 page_url: "https://branovaclav.github.io/kucharka-recepty/recipes/palacinky.html"
