@@ -128,13 +128,36 @@ select { font: inherit; font-size: 1.05rem; width: 100%; min-height: 48px; paddi
 .empty { margin-top: 1.2rem; padding: 1rem 1.2rem; background: var(--paper); border: 2px dashed var(--tomato); border-radius: 14px; font-weight: 700; }
 .ix-foot { margin-top: calc(var(--gap) * 2); padding-block: 1.2rem 2.4rem; font-size: 1rem; }
 
+/* Notion admin link — kept in the template so sync regenerations preserve it */
+.ix-head-row { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: .9rem 1.2rem; }
+.ix-head-text { flex: 1 1 14rem; min-width: 0; }
+.ix-notion {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-height: 44px; padding: .55rem 1rem;
+  border: 2px solid var(--paper); border-radius: 999px;
+  color: var(--paper); background: transparent;
+  font-family: var(--font-body); font-weight: 700; font-size: 1rem;
+  text-decoration: none; white-space: nowrap;
+}
+.ix-notion:hover, .ix-notion:focus-visible { background: var(--paper); color: var(--cobalt); outline: none; }
+.ix-foot a { color: var(--cobalt); font-weight: 700; }
+@media (max-width: 520px) {
+  .ix-head-row { align-items: stretch; }
+  .ix-notion { width: 100%; }
+}
+
   </style>
 </head>
 <body data-tint="pasta-rice">
   <header class="ix-head">
     <div class="wrap">
-      <h1>Rodinná kuchařka</h1>
-      <p>4 recepty · ověřené zdroje, původní text, naše tipy zvlášť označené</p>
+      <div class="ix-head-row">
+        <div class="ix-head-text">
+          <h1>Rodinná kuchařka</h1>
+          <p>4 recepty · ověřené zdroje, původní text, naše tipy zvlášť označené</p>
+        </div>
+        <a class="ix-notion" href="https://app.notion.com/p/40e3c877b172818686f5d1fe12709436">Správa v Notion</a>
+      </div>
     </div>
   </header>
   <main class="wrap">
@@ -198,7 +221,7 @@ select { font: inherit; font-size: 1.05rem; width: 100%; min-height: 48px; paddi
     </ul>
     <p class="empty" id="empty" hidden>Žádný recept neodpovídá filtrům.</p>
   </main>
-  <footer class="ix-foot wrap"><p>Recepty jsou převzaté beze změn z uvedených zdrojů (odkaz na každé stránce). Hodnocení a poznámky jsou naše rodinné, z Notionu.</p></footer>
+  <footer class="ix-foot wrap"><p>Recepty jsou převzaté beze změn z uvedených zdrojů (odkaz na každé stránce). Hodnocení a poznámky jsou naše rodinné — <a href="https://app.notion.com/p/40e3c877b172818686f5d1fe12709436">Správa v Notion</a>.</p></footer>
   <script type="application/json" id="recipes-data">[{"appliances":[{"cs":"Plynový sporák","key":"gas-stove","name":"Gas stove"}],"difficulty":"medium","ingredients":[{"cs":"Slanina","name":"Bacon"},{"cs":"Bryndza","name":"Bryndza"},{"cs":"Pažitka","name":"Chives"},{"cs":"Brambory","name":"Potatoes"},{"cs":"Sůl","name":"Salt"},{"cs":"Polohrubá mouka","name":"Semi-coarse flour"},{"cs":"Jarní cibulka","name":"Spring onion"}],"labels":[{"cs":"Klasika","name":"Classic"},{"cs":"Slovenské","name":"Slovak"},{"cs":"Vyzkoušet","name":"To try"}],"last_prepared":"","rating_overall":"","slug":"bryndzove-halusky","thumb":"images/thumbs/bryndzove-halusky.jpg","tint":"pasta-rice","title":"Bryndzové halušky","total_time":40,"url":"recipes/bryndzove-halusky.html"},{"appliances":[{"cs":"Plynový sporák","key":"gas-stove","name":"Gas stove"},{"cs":"Horkovzdušná fritéza","key":"air-fryer","name":"Air fryer"}],"difficulty":"easy","ingredients":[{"cs":"Mletý pepř","name":"Black pepper"},{"cs":"Strouhanka","name":"Breadcrumbs"},{"cs":"Kuřecí maso","name":"Chicken"},{"cs":"Olej","name":"Cooking oil"},{"cs":"Vejce","name":"Eggs"},{"cs":"Mléko","name":"Milk"},{"cs":"Hladká mouka","name":"Plain flour"},{"cs":"Sůl","name":"Salt"}],"labels":[{"cs":"Pro začátečníky","name":"Beginner"},{"cs":"Klasika","name":"Classic"},{"cs":"Smažené","name":"Fried"},{"cs":"Tip pro děti","name":"Kids' favourite candidate"}],"last_prepared":"","rating_overall":"","slug":"kureci-rizek","thumb":"images/thumbs/kureci-rizek.jpg","tint":"chicken","title":"Kuřecí řízek","total_time":40,"url":"recipes/kureci-rizek.html"},{"appliances":[{"cs":"Plynový sporák","key":"gas-stove","name":"Gas stove"}],"difficulty":"easy","ingredients":[{"cs":"Skořice","name":"Cinnamon"},{"cs":"Granko","name":"Cocoa drink powder"},{"cs":"Olej","name":"Cooking oil"},{"cs":"Vejce","name":"Eggs"},{"cs":"Marmeláda","name":"Jam"},{"cs":"Mléko","name":"Milk"},{"cs":"Hladká mouka","name":"Plain flour"},{"cs":"Moučkový cukr","name":"Powdered sugar"},{"cs":"Sůl","name":"Salt"},{"cs":"Jahody","name":"Strawberries"},{"cs":"Cukr","name":"Sugar"}],"labels":[{"cs":"Sladké","name":"Sweet"},{"cs":"Bez masa","name":"Meatless"},{"cs":"Tip pro děti","name":"Kids' favourite candidate"},{"cs":"Pro začátečníky","name":"Beginner"}],"last_prepared":"","rating_overall":"","slug":"palacinky","thumb":"images/thumbs/palacinky.jpg","tint":"veg","title":"Palačinky","total_time":75,"url":"recipes/palacinky.html"},{"appliances":[{"cs":"Plynový sporák","key":"gas-stove","name":"Gas stove"}],"difficulty":"easy","ingredients":[{"cs":"Slanina","name":"Bacon"},{"cs":"Mletý pepř","name":"Black pepper"},{"cs":"Vejce","name":"Eggs"},{"cs":"Olivový olej","name":"Olive oil"},{"cs":"Pecorino","name":"Pecorino"},{"cs":"Sůl","name":"Salt"},{"cs":"Špagety","name":"Spaghetti"}],"labels":[{"cs":"Italské","name":"Italian"},{"cs":"Vyzkoušet","name":"To try"},{"cs":"Tip pro děti","name":"Kids' favourite candidate"}],"last_prepared":"","rating_overall":"","slug":"spagety-carbonara","thumb":"images/thumbs/spagety-carbonara.jpg","tint":"pasta-rice","title":"Špagety carbonara","total_time":35,"url":"recipes/spagety-carbonara.html"}]</script>
   <script>
 (function () {
