@@ -8,7 +8,7 @@ total_time: 40
 difficulty: "Medium"
 main_ingredient: "Pasta / rice / potatoes"
 labels: ["Classic", "Slovak", "To try"]
-appliances: ["Gas stove"]
+appliances: ["Gas stove", "Halušky grater"]
 ingredients:
   - {name: "Bacon", cs: "Slanina"}
   - {name: "Bryndza", cs: "Bryndza"}
