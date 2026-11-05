@@ -1,0 +1,59 @@
+{
+ "appliances": [
+  "Gas stove"
+ ],
+ "difficulty": "Medium",
+ "ingredients": [
+  {
+   "cs": "Slanina",
+   "name": "Bacon"
+  },
+  {
+   "cs": "Bryndza",
+   "name": "Bryndza"
+  },
+  {
+   "cs": "Pažitka",
+   "name": "Chives"
+  },
+  {
+   "cs": "Brambory",
+   "name": "Potatoes"
+  },
+  {
+   "cs": "Sůl",
+   "name": "Salt"
+  },
+  {
+   "cs": "Polohrubá mouka",
+   "name": "Semi-coarse flour"
+  },
+  {
+   "cs": "Jarní cibulka",
+   "name": "Spring onion"
+  }
+ ],
+ "labels": [
+  "Classic",
+  "Slovak",
+  "To try"
+ ],
+ "last_prepared": "",
+ "main_ingredient": "Pasta / rice / potatoes",
+ "notes": "",
+ "notion_id": "40e3c877b1728161ab4fe578091371b7",
+ "notion_url": "https://app.notion.com/p/40e3c877b1728161ab4fe578091371b7",
+ "page_url": "https://branovaclav.github.io/kucharka-recepty/recipes/bryndzove-halusky.html",
+ "ratings": {
+  "andrej": "",
+  "brano": "",
+  "lukas": "",
+  "overall": "",
+  "tomas": "",
+  "zuzka": ""
+ },
+ "source_url": "https://varecha.pravda.sk/recepty/tradicne-bryndzove-halusky/85825-recept.html",
+ "theme": "smalt",
+ "title": "Bryndzové halušky",
+ "total_time": 40
+}

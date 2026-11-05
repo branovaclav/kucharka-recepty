@@ -1,7 +1,7 @@
-/* @c:official — additions for the official pages (cookbook/cookbook.md §Official additions) */
+/* @c:official — additions for the official pages (themes/smalt/cookbook.md §O4 — shared by all themes, uses fallbacks for theme variables) */
 /* @c:checklist-group — non-clickable group heading inside the ingredient list ("Dále:", "Ozdobenie:"); has no <button>, so script.js indexes stay stable */
-.checklist .checklist-group { grid-column: 1 / -1; margin-top: .6rem; padding: .3rem .5rem 0; border-top: 2px dashed var(--dot);
-  font-family: var(--font-display); font-weight: 700; font-size: 1.2rem; color: var(--cobalt); }
+.checklist .checklist-group { grid-column: 1 / -1; margin-top: .6rem; padding: .3rem .5rem 0; border-top: 2px dashed var(--dot, var(--line, var(--rule, currentColor)));
+  font-family: var(--font-display, var(--font-hand, inherit)); font-weight: 700; font-size: 1.2rem; color: var(--cobalt, var(--pine, var(--pen, currentColor))); }
 /* @c:rating-inherited — person has no own rating → shows the family (overall) value with a dashed rim */
 .rating[data-inherited] { border-style: dashed; opacity: .85; }
 .rating[data-inherited]::after { content: " ·\00a0jako rodina"; font-weight: 400; font-size: .85em; }

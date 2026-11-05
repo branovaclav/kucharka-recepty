@@ -1,0 +1,290 @@
+/* @c:base */
+/* ==== Babiččin sešit — grandmother's recipe notebook: a squared-paper sheet with a red margin line lying on a
+   gingham tablecloth woven from the page tint; handwritten headings, typewriter labels, a taped polaroid.
+   Original recipe text is printed in dark ink (Literata). OUR additions are written in BLUE BALLPOINT
+   with a "Náš tip" label and a dashed blue frame. ==== */
+:root {
+  --paper: #fffcf3;     /* the notebook sheet */
+  --card: #ffffff;      /* index cards */
+  --ink: #2b2622;       /* printed text (15:1 on paper) */
+  --muted: #5e544b;     /* typed captions (7.2:1) */
+  --pen: #1f3f94;       /* blue ballpoint = our additions (9.3:1) */
+  --pen-soft: #e8edf9;
+  --red: #b3311f;       /* red pencil: warnings, margin numbers (5.9:1) */
+  --margin: #e8a29a;    /* the red margin line */
+  --grid: rgba(60, 100, 170, .13);
+  --rule: #c9d6ea;      /* ruled lines on index cards */
+  --stamp: #3c6e47;     /* "Hotovo" stamp green (5.9:1) */
+  --kraft: #e4cfa3;
+  --font-hand: "Caveat", "Bradley Hand", "Segoe Print", cursive;
+  --font-body: "Literata", "Iowan Old Style", Georgia, serif;
+  --font-type: "Courier Prime", "Courier New", ui-monospace, monospace;
+  --fs-body: clamp(1.15rem, 0.92rem + 0.85vw, 1.38rem);
+  --fs-step: clamp(1.25rem, 0.98rem + 1vw, 1.55rem);
+  --fs-hand: clamp(1.55rem, 1.2rem + 1.2vw, 1.95rem);   /* handwriting must be ~1.4x body to stay legible */
+  --fs-h1: clamp(3.6rem, 2.4rem + 5vw, 6.2rem);
+  --fs-h2: clamp(2.5rem, 1.9rem + 2.2vw, 3.4rem);
+  --edge: clamp(.9rem, .4rem + 2vw, 2.4rem);            /* tablecloth visible around the sheet */
+  --pad: clamp(1rem, .5rem + 2vw, 2.4rem);
+  --margin-x: clamp(4rem, 3rem + 3vw, 5.8rem);       /* red margin line position */
+  --gap: clamp(1rem, .6rem + 1.6vw, 2rem);
+  --maxw: 1180px;
+  --wobble: 255px 15px 225px 15px / 15px 225px 15px 255px; /* hand-drawn box corners */
+}
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+body { margin: 0; color: var(--ink); font-family: var(--font-body); font-size: var(--fs-body); line-height: 1.6; -webkit-font-smoothing: antialiased;
+  /* gingham tablecloth from the tint */
+  background-color: var(--tint);
+  background-image: linear-gradient(90deg, color-mix(in srgb, var(--tint-strong) 42%, transparent) 50%, transparent 50%),
+                    linear-gradient(color-mix(in srgb, var(--tint-strong) 42%, transparent) 50%, transparent 50%);
+  background-size: 40px 40px; }
+img { max-width: 100%; display: block; }
+a { color: var(--ink); text-decoration-thickness: 1.5px; text-underline-offset: 3px; }
+:focus-visible { outline: 3px solid var(--pen); outline-offset: 3px; border-radius: 6px; }
+.wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 var(--edge); }
+/* the sheet */
+main.wrap { width: calc(100% - 2 * var(--edge)); padding: var(--pad) var(--pad) calc(var(--pad) * 1.4) var(--margin-x); margin-top: .6rem; position: relative;
+  background-color: var(--paper);
+  background-image: linear-gradient(90deg, transparent calc(var(--margin-x) - 1.1rem), var(--margin) calc(var(--margin-x) - 1.1rem) calc(var(--margin-x) - 1.1rem + 2px), transparent 0),
+                    linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 100% 100%, 26px 26px, 26px 26px; box-shadow: 0 1px 2px rgba(60,40,20,.18), 0 10px 30px rgba(60,40,20,.16); border-radius: 3px; }
+h1, h2, h3 { margin: 0; line-height: 1.1; }
+.section-title { font-family: var(--font-hand); font-weight: 700; font-size: var(--fs-h2); line-height: 1; margin-bottom: 1rem; display: flex; align-items: baseline; flex-wrap: wrap; gap: .4rem 1rem; }
+.section-title { background: linear-gradient(transparent 58%, color-mix(in srgb, var(--tint-strong) 70%, transparent) 58% 90%, transparent 90%) no-repeat; background-size: auto; width: fit-content; padding-right: .3rem; }
+.section-title small { font-family: var(--font-type); font-size: 1rem; letter-spacing: .04em; color: var(--muted); }
+.card { background: var(--card); border-radius: 4px; padding: clamp(1rem, .7rem + 1vw, 1.5rem); box-shadow: 0 1px 2px rgba(60,40,20,.2), 0 4px 12px rgba(60,40,20,.08);
+  border-top: 3px double var(--margin); }
+.card-title { font-family: var(--font-type); font-size: 1rem; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); margin-bottom: .6rem; }
+.btn { font-family: var(--font-type); font-weight: 700; font-size: 1.05rem; letter-spacing: .06em; text-transform: uppercase; cursor: pointer; color: var(--ink);
+  background: var(--card); border: 2px solid var(--ink); border-radius: var(--wobble); padding: .6rem 1.2rem; min-height: 50px; box-shadow: 2px 3px 0 rgba(43,38,34,.25); }
+.btn:active { transform: translateY(2px); box-shadow: none; }
+.btn[aria-pressed="true"] { background: var(--pen); border-color: var(--pen); color: #fff; }
+.cook { display: grid; gap: calc(var(--gap) * 1.5); margin-top: calc(var(--gap) * 1.6); }
+@media (min-width: 1000px) { .cook { grid-template-columns: minmax(320px, .85fr) 1.6fr; align-items: start; } .cook .ingredients { position: sticky; top: 1rem; } }
+@media (max-height: 760px) { .cook .ingredients { position: static; } }
+
+/* @c:frame */
+/* Sticky "open full screen" bar, visible only inside an iframe (Notion embed). Needs the tiny <head> script that sets html.is-framed. */
+.frame-open { display: none; }
+html.is-framed .frame-open { display: flex; justify-content: center; padding: .5rem var(--edge); background: var(--ink); position: sticky; top: 0; z-index: 10; }
+.btn-fullscreen { display: inline-flex; align-items: center; gap: .5rem; min-height: 48px; padding: .4rem 1.3rem; background: var(--paper); color: var(--ink); border-radius: var(--wobble);
+  font-family: var(--font-type); font-weight: 700; font-size: 1.05rem; text-decoration: none; }
+html.is-framed [data-wakelock] { display: none !important; }
+html.is-framed .cook .ingredients { position: static; }
+html.is-framed .hero-photo img { aspect-ratio: auto; height: clamp(160px, 45vh, 420px); }
+
+/* @c:topbar */
+.topbar .wrap { display: flex; align-items: center; justify-content: space-between; gap: .6rem 1rem; flex-wrap: wrap; padding-block: .9rem .3rem; }
+.backlink { display: inline-flex; align-items: center; min-height: 46px; padding: .3rem 1.1rem .3rem 1.4rem; font-family: var(--font-type); font-weight: 700; font-size: 1rem; color: var(--ink); text-decoration: none;
+  background: var(--kraft); clip-path: polygon(14px 0, 100% 0, 100% 100%, 14px 100%, 0 50%); position: relative; }
+.backlink::before { content: "←\00a0"; }
+.credit { margin: 0; padding: .35rem .9rem; font-family: var(--font-type); font-size: .9rem; line-height: 1.35; color: var(--ink); background: var(--paper); box-shadow: 0 1px 3px rgba(60,40,20,.25); transform: rotate(.6deg); }
+
+/* @c:hero */
+.hero { display: grid; gap: calc(var(--gap) * 1.2); align-items: center; }
+.hero-photo { margin: .8rem auto 0; padding: 12px 12px 14px; background: #fff; box-shadow: 0 2px 4px rgba(60,40,20,.22), 0 12px 26px rgba(60,40,20,.18); transform: rotate(-1.6deg); position: relative; max-width: 620px; width: 100%; }
+.hero-photo img { width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; }
+.hero-photo::before, .hero-photo::after { content: ""; position: absolute; width: 130px; height: 34px; top: -16px; background: color-mix(in srgb, var(--tint-strong) 78%, transparent);
+  box-shadow: 0 1px 2px rgba(0,0,0,.08); -webkit-mask: linear-gradient(90deg, transparent 0 3px, #000 3px calc(100% - 3px), transparent 0); }
+.hero-photo::before { left: -22px; transform: rotate(-32deg); }
+.hero-photo::after { right: -22px; transform: rotate(28deg); }
+.hero h1 { font-family: var(--font-hand); font-weight: 700; font-size: var(--fs-h1); line-height: .95; margin-top: .4rem; padding-bottom: .6rem;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 14' preserveAspectRatio='none'%3E%3Cpath d='M2 9 C40 3 70 12 110 7 S190 3 230 8 280 6 298 4' fill='none' stroke='%23b3311f' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E") left bottom / min(100%, 12em) 14px no-repeat; }
+.lede { margin: 1rem 0 0; max-width: 40ch; font-style: italic; }
+.hero-ratings { display: flex; flex-wrap: wrap; align-items: center; gap: .6rem 1.4rem; margin-top: 1rem; }
+.hero-ratings p { margin: 0; }
+.overall { display: inline-flex; align-items: center; gap: .6rem; }
+.overall-k { font-family: var(--font-hand); font-weight: 700; font-size: 1.7rem; color: var(--pen); }
+.src-rating { font-family: var(--font-type); font-size: .95rem; }
+.stars { color: var(--red); }
+@media (min-width: 1000px) { .hero { grid-template-columns: 1fr 1fr; } }
+
+/* @c:labels */
+/* Notion "Štítky" → one <li class="label-chip"> each. Rendered as ink stamps in the tint's dark colour. */
+.labels { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: .5rem .6rem; }
+.label-chip { font-family: var(--font-type); font-weight: 700; font-size: .9rem; letter-spacing: .08em; text-transform: uppercase; color: var(--tint-ink);
+  border: 2px solid currentColor; border-radius: 4px; padding: .1rem .55rem; background: color-mix(in srgb, var(--tint) 55%, transparent); }
+.label-chip:nth-child(odd) { transform: rotate(-1.5deg); } .label-chip:nth-child(even) { transform: rotate(1.2deg); }
+
+/* @c:meta */
+/* Info strip = a typed index card. */
+.meta { list-style: none; margin: calc(var(--gap) * 1.4) 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); background: var(--card);
+  box-shadow: 0 1px 2px rgba(60,40,20,.2), 0 4px 12px rgba(60,40,20,.08); border-top: 3px double var(--margin); }
+.meta > li { padding: .8rem 1rem; }
+.meta > li + li { border-left: 1px solid var(--rule); }
+.meta .k { display: block; font-family: var(--font-type); font-weight: 700; font-size: .9rem; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.meta .v { display: block; font-family: var(--font-hand); font-weight: 700; font-size: 2.4rem; line-height: 1.05; }
+.meta .sub { display: block; font-size: .92rem; line-height: 1.35; color: var(--muted); }
+.meta .meta-appliances { grid-column: 1 / -1; border-left: 0; border-top: 1px solid var(--rule); display: flex; flex-wrap: wrap; align-items: center; gap: .4rem 1rem; }
+@media (min-width: 1000px) { .meta { grid-template-columns: 1fr 1fr 1fr 2fr; } .meta .meta-appliances { grid-column: auto; border-top: 0; border-left: 1px solid var(--rule); display: block; } }
+
+/* @c:difficulty */
+/* data-value: easy | medium | hard → 1 / 2 / 3 filled wooden-spoon dots. Text: Snadné / Střední / Náročné. */
+.difficulty { display: inline-flex; align-items: center; gap: .5rem; font-family: var(--font-hand); font-weight: 700; font-size: 2.1rem; line-height: 1.1; }
+.pips { display: inline-flex; gap: 4px; }
+.pips i { width: 15px; height: 15px; border: 2px solid var(--ink); border-radius: 50% 45% 55% 50%; }
+.difficulty[data-value="easy"] .pips i:nth-child(-n+1), .difficulty[data-value="medium"] .pips i:nth-child(-n+2), .difficulty[data-value="hard"] .pips i { background: var(--ink); }
+.difficulty[data-value="easy"] .pips i:first-child { background: var(--stamp); border-color: var(--stamp); }
+.difficulty[data-value="hard"] .pips i { background: var(--red); border-color: var(--red); }
+
+/* @c:appliances */
+/* data-value keys: gas-stove | induction | oven | air-fryer | microwave | blender (icon from the icons block). */
+.appliances { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: .5rem; }
+.appliance { display: inline-flex; align-items: center; gap: .45rem; min-height: 44px; padding: .3rem .9rem .3rem .7rem; border: 2px solid var(--ink); border-radius: var(--wobble);
+  font-family: var(--font-type); font-weight: 700; font-size: .95rem; background: var(--paper); }
+.appliance::before { width: 1.4em; height: 1.4em; }
+
+/* @c:family */
+.family { margin-top: calc(var(--gap) * 1.6); }
+.family-grid { display: grid; gap: calc(var(--gap) * 1.2); }
+@media (min-width: 760px) { .family-grid { grid-template-columns: 1.1fr 1fr; align-items: start; } }
+
+/* @c:ratings */
+/* data-value: loved (Chutná) | ok (Ujde) | disliked (Nechutná) | "" (Zatím nehodnotil/a). Ratings are family data → blue pen stamps. Word always shown. */
+.ratings { list-style: none; margin: 0; padding: 0; }
+.ratings li { display: flex; justify-content: space-between; align-items: center; gap: .6rem; min-height: 54px; border-bottom: 1px solid var(--rule); }
+.who { font-family: var(--font-hand); font-weight: 700; font-size: 2rem; line-height: 1; }
+.rating { display: inline-flex; align-items: center; gap: .4rem; padding: .15rem .7rem .15rem .5rem; border: 2px solid currentColor; border-radius: var(--wobble);
+  font-family: var(--font-type); font-weight: 700; font-size: .95rem; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); }
+.rating::before { width: 1.3em; height: 1.3em; }
+.rating[data-value="loved"] { color: var(--red); transform: rotate(-1.5deg); }
+.rating[data-value="ok"] { color: #6c5400; }
+.rating[data-value="disliked"] { color: var(--pen); transform: rotate(1deg); }
+.overall .rating { background: var(--paper); }
+.last-prepared { margin: .8rem 0 0; font-family: var(--font-type); font-size: .95rem; color: var(--muted); }
+.last-prepared time { font-family: var(--font-hand); font-weight: 700; font-size: 1.6rem; color: var(--pen); }
+
+/* @c:notes */
+/* Free text from Notion "Poznámky" (family notes) → a sticky note in the tint, written in blue pen. The sync writes <p> paragraphs. */
+.notes-card { background: color-mix(in srgb, var(--tint) 85%, #fff); border-top: 0; transform: rotate(1.2deg); box-shadow: 0 2px 3px rgba(60,40,20,.18), 0 14px 22px -10px rgba(60,40,20,.35); }
+.notes-card .card-title { color: var(--tint-ink); }
+.notes { font-family: var(--font-hand); font-weight: 600; font-size: var(--fs-hand); line-height: 1.25; color: var(--pen); }
+.notes p { margin: 0 0 .5rem; } .notes p:last-child { margin: 0; }
+
+/* @c:ingredients */
+.checklist { list-style: none; margin: 0; padding: 0; display: grid; }
+@media (min-width: 640px) and (max-width: 999px) { .checklist { grid-template-columns: 1fr 1fr; column-gap: 1.4rem; } }
+.checklist li { border-bottom: 1px solid var(--rule); }
+.checklist button { all: unset; box-sizing: border-box; cursor: pointer; width: 100%; display: flex; align-items: center; gap: .85rem; padding: .6rem .2rem; min-height: 58px;
+  font-size: var(--fs-body); line-height: 1.3; -webkit-tap-highlight-color: transparent; }
+.checklist button:focus-visible { outline: 3px solid var(--pen); border-radius: 6px; }
+.checklist .box { flex: none; width: 32px; height: 32px; border: 2px solid var(--ink); border-radius: 4px 7px 5px 8px / 7px 4px 8px 5px; position: relative; background: var(--card); }
+.checklist .box::after { content: ""; position: absolute; left: 2px; top: -9px; width: 34px; height: 34px; background: var(--pen); -webkit-mask: var(--i-check) center / contain no-repeat; mask: var(--i-check) center / contain no-repeat; opacity: 0; transform: rotate(-6deg); }
+.checklist .qty { font-weight: 700; white-space: nowrap; }
+.checklist [aria-pressed="true"] .box::after { opacity: 1; }
+.checklist [aria-pressed="true"] .text { color: var(--muted); text-decoration: line-through; text-decoration-color: var(--pen); text-decoration-thickness: 2.5px; }
+.list-tools { display: flex; justify-content: space-between; align-items: center; gap: .6rem; flex-wrap: wrap; margin-top: 1rem; font-family: var(--font-type); font-size: .95rem; color: var(--muted); }
+
+/* @c:steps */
+/* Step numbers sit in the red margin, hand-circled in red pencil. */
+.steps { list-style: none; margin: 0; padding: 0; counter-reset: step; display: grid; gap: calc(var(--gap) * 1.3); }
+.step { counter-increment: step; position: relative; }
+.step::before { content: counter(step); position: absolute; left: calc(-1 * var(--margin-x) + .3rem); top: -.35rem; width: calc(var(--margin-x) - 1.7rem); max-width: 3.8rem; aspect-ratio: 1;
+  display: grid; place-items: center; font-family: var(--font-hand); font-weight: 700; font-size: clamp(2rem, 1.6rem + 1.4vw, 2.7rem); line-height: 1; color: var(--red);
+  border: 2.5px solid var(--red); border-radius: 55% 45% 50% 48% / 48% 55% 45% 52%; transform: rotate(-4deg); background: var(--paper); }
+.step-body { min-width: 0; }
+.step h3 { font-family: var(--font-body); font-weight: 700; font-size: clamp(1.35rem, 1.1rem + .9vw, 1.7rem); margin-bottom: .3rem; }
+.step p { font-size: var(--fs-step); line-height: 1.55; margin: 0; max-width: 44ch; }
+.step-photo { margin: 1.1rem 0 .4rem; padding: 10px 10px 12px; background: #fff; max-width: 500px; box-shadow: 0 2px 4px rgba(60,40,20,.2), 0 10px 20px rgba(60,40,20,.14); transform: rotate(1deg); }
+.step-photo img { width: 100%; height: auto; aspect-ratio: 3 / 2; object-fit: cover; }
+.step-photo figcaption { font-family: var(--font-type); font-size: .85rem; color: var(--muted); padding-top: .45rem; }
+.step-done { margin-top: 1rem; min-width: 9rem; border-style: dashed; }
+.step-done[aria-pressed="true"] { background: transparent; color: var(--stamp); border: 3px solid var(--stamp); transform: rotate(-3deg); box-shadow: none; }
+.step.is-done::before { content: "✓"; color: var(--stamp); border-color: var(--stamp); }
+.step.is-done h3, .step.is-done p, .step.is-done aside, .step.is-done .warning { opacity: .45; }
+
+/* @c:our-inline */
+/* OUR addition inside the original text: blue ballpoint handwriting + "Náš tip" tag + dashed blue frame. */
+.step p.our-inline, .our-inline { margin: 1rem 0 0; padding: .45rem .9rem .55rem; border: 2px dashed var(--pen); border-radius: var(--wobble); background: color-mix(in srgb, var(--pen-soft) 60%, transparent);
+  font-family: var(--font-hand); font-weight: 600; font-size: var(--fs-hand); line-height: 1.2; color: var(--pen); max-width: 30em; transform: rotate(-.4deg); }
+.our-mark { display: inline-block; margin-right: .3rem; padding: 0 .5rem; border-radius: 4px; background: var(--pen); color: #fff; font-family: var(--font-type); font-weight: 700;
+  font-size: .85rem; letter-spacing: .08em; text-transform: uppercase; vertical-align: .25em; line-height: 1.6; }
+.our-mark::before { content: "✎ "; }
+
+/* @c:warning */
+.warning { margin: 1rem 0 0; padding: .6rem 1rem .8rem 3.3rem; position: relative; border: 2.5px solid var(--red); border-radius: var(--wobble); background: #fff3ef; max-width: 46ch; }
+.warning::before { content: ""; position: absolute; left: .85rem; top: .8rem; width: 1.7rem; height: 1.7rem; background: var(--red); -webkit-mask: var(--i-warning) center / contain no-repeat; mask: var(--i-warning) center / contain no-repeat; }
+.warning-label { display: block; font-family: var(--font-hand); font-weight: 700; font-size: 1.7rem; line-height: 1.1; color: var(--red); }
+.step .warning p, .warning p { margin: .1rem 0 0; font-size: 1.12rem; line-height: 1.5; }
+
+/* @c:sidenote */
+/* Neutral explanation. data-origin="ours" → blue pen handwriting with dashed frame; data-origin="source" → printed, plain left rule. */
+.sidenote { margin: 1rem 0 0; padding: .4rem 1rem; border-left: 3px solid var(--ink); max-width: 44ch; }
+.sidenote-label { display: block; font-family: var(--font-type); font-weight: 700; font-size: .85rem; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.step .sidenote p, .sidenote p { margin: .1rem 0 0; font-size: 1.12rem; line-height: 1.5; }
+.sidenote[data-origin="ours"] { border: 2px dashed var(--pen); border-radius: var(--wobble); transform: rotate(.5deg); }
+.sidenote[data-origin="ours"] .sidenote-label { color: var(--pen); }
+.step .sidenote[data-origin="ours"] p, .sidenote[data-origin="ours"] p { font-family: var(--font-hand); font-weight: 600; font-size: var(--fs-hand); line-height: 1.2; color: var(--pen); }
+
+/* @c:tip-source */
+/* Tip from the source = a typed index card with ruled lines and a strip of tape. */
+.tips { display: grid; gap: calc(var(--gap) * 1.6); margin-top: calc(var(--gap) * 2.2); }
+@media (min-width: 1000px) { .tips { grid-template-columns: 1fr 1fr; align-items: start; } }
+.tip { position: relative; background: var(--card); padding: 1.6rem clamp(1rem, .7rem + 1vw, 1.6rem) 1.2rem; box-shadow: 0 1px 2px rgba(60,40,20,.2), 0 6px 16px rgba(60,40,20,.12); border-top: 3px double var(--margin); }
+.tip::before { content: ""; position: absolute; top: -18px; left: 50%; width: 120px; height: 32px; margin-left: -60px; transform: rotate(-2deg);
+  background: color-mix(in srgb, var(--tint-strong) 75%, transparent); -webkit-mask: linear-gradient(90deg, transparent 0 3px, #000 3px calc(100% - 3px), transparent 0); }
+.tip-label { display: inline-block; font-family: var(--font-type); font-weight: 700; font-size: .9rem; letter-spacing: .08em; text-transform: uppercase; color: var(--tint-ink);
+  border: 2px solid currentColor; border-radius: 4px; padding: .05rem .5rem; transform: rotate(-1.5deg); margin-bottom: .6rem; }
+.tip h3 { font-family: var(--font-hand); font-weight: 700; font-size: clamp(2rem, 1.6rem + 1.3vw, 2.6rem); line-height: 1.05; margin-bottom: .7rem; }
+.tip p { margin: 0 0 .7rem; }
+.tip .facts { display: flex; flex-wrap: wrap; gap: .5rem 1.4rem; margin: 0 0 1rem; }
+.tip .fact { font-family: var(--font-type); font-size: .9rem; color: var(--muted); text-transform: uppercase; }
+.tip .fact b { display: block; font-family: var(--font-hand); font-size: 2.4rem; line-height: 1; color: var(--ink); text-transform: none; }
+.tip .tip-source { font-family: var(--font-type); font-size: .9rem; color: var(--muted); border-top: 1px solid var(--rule); padding-top: .7rem; margin: .4rem 0 0; }
+
+/* @c:tip-ours */
+/* OUR tip = written by us in blue ballpoint, dashed blue frame, "Náš tip" stamp. */
+.tip--ours { background: var(--paper); border: 2px dashed var(--pen); border-radius: var(--wobble); box-shadow: none; transform: rotate(-.5deg); }
+.tip--ours::before { display: none; }
+.tip--ours .tip-label { color: #fff; background: var(--pen); border-color: var(--pen); }
+.tip--ours .tip-label::before { content: "✎ "; }
+.tip--ours h3, .tip--ours p { color: var(--pen); }
+.tip--ours p:not(.big):not(.tip-source) { font-family: var(--font-hand); font-weight: 600; font-size: var(--fs-hand); line-height: 1.25; }
+.tip .big { font-family: var(--font-hand); font-weight: 700; font-size: clamp(3.6rem, 2.8rem + 3vw, 5rem); line-height: .9; color: var(--red); }
+.tip--ours .tip-source { color: var(--pen); border-top: 1.5px dashed var(--pen); }
+
+/* @c:toolbar */
+.toolbar { display: flex; gap: .8rem; flex-wrap: wrap; margin-top: calc(var(--gap) * 1.6); }
+.toolbar .btn { min-height: 56px; padding-inline: 1.4rem; background: var(--kraft); }
+.toolbar .btn[aria-pressed="true"] { background: var(--pen); }
+
+/* @c:source-foot */
+.source-foot .wrap { margin-top: 1.2rem; margin-bottom: 2rem; }
+.source-foot .wrap { width: calc(100% - 2 * var(--edge)); padding: 1rem 1.3rem 1.2rem; background: var(--paper); box-shadow: 0 1px 3px rgba(60,40,20,.25); transform: rotate(-.3deg);
+  font-family: var(--font-type); font-size: .95rem; line-height: 1.5; }
+.source-foot p { margin: .3rem 0; }
+.foot-ours { color: var(--pen); }
+@media print { body { background: #fff; } main.wrap { box-shadow: none; } .frame-open, .toolbar, .list-tools, .step-done, .backlink { display: none !important; } }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+
+/* @c:phone */
+/* iPhone + safe-area layer — keep it LAST in the <style> so it wins */
+html, body { overflow-x: clip; }   /* nothing may ever cause sideways scroll */
+h1, h2, h3 { text-wrap: balance; }
+body { padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left); }
+html.is-framed .frame-open { padding-top: max(.5rem, env(safe-area-inset-top)); }
+@media (max-width: 999px) { .meta { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (min-width: 1000px) { .meta { grid-template-columns: repeat(3, minmax(0, 1fr)) minmax(0, 2fr); } }
+.meta .v, .tip .fact b { white-space: nowrap; }
+.credit a, .source-foot a, .tip-source a { padding-block: .35em; }        /* bigger hit area, same layout */
+.foot-back { display: inline-flex; align-items: center; min-height: 44px; }
+@media (max-width: 559px) {                    /* iPhone portrait (375–430 px) */
+  .meta { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .meta > li:first-child { grid-column: 1 / -1; }
+  .rating { white-space: nowrap; }
+  .tip .fact b { font-size: 1.6rem; }
+  .credit { font-size: .9rem; }
+}
+:root { --edge: clamp(.6rem, .2rem + 2vw, 2.4rem); }
+@media (max-width: 559px) {
+  :root { --margin-x: 3.6rem; --pad: .9rem; }
+  .step::before { width: 2rem; font-size: 1.35rem; }
+  .meta > li:first-child { border-bottom: 1px solid var(--rule); }
+  .meta > li:nth-child(2) { border-left: 0; }
+  .who { font-size: 1.75rem; }
+  .difficulty { font-size: 1.75rem; gap: .35rem; }
+  .pips i { width: 12px; height: 12px; }
+  .hero-photo { padding: 8px 8px 10px; }
+  .hero-photo::before, .hero-photo::after { width: 96px; height: 28px; }
+}

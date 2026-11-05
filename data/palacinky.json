@@ -1,0 +1,76 @@
+{
+ "appliances": [
+  "Gas stove"
+ ],
+ "difficulty": "Easy",
+ "ingredients": [
+  {
+   "cs": "Skořice",
+   "name": "Cinnamon"
+  },
+  {
+   "cs": "Granko",
+   "name": "Cocoa drink powder"
+  },
+  {
+   "cs": "Olej",
+   "name": "Cooking oil"
+  },
+  {
+   "cs": "Vejce",
+   "name": "Eggs"
+  },
+  {
+   "cs": "Marmeláda",
+   "name": "Jam"
+  },
+  {
+   "cs": "Mléko",
+   "name": "Milk"
+  },
+  {
+   "cs": "Hladká mouka",
+   "name": "Plain flour"
+  },
+  {
+   "cs": "Moučkový cukr",
+   "name": "Powdered sugar"
+  },
+  {
+   "cs": "Sůl",
+   "name": "Salt"
+  },
+  {
+   "cs": "Jahody",
+   "name": "Strawberries"
+  },
+  {
+   "cs": "Cukr",
+   "name": "Sugar"
+  }
+ ],
+ "labels": [
+  "Sweet",
+  "Meatless",
+  "Kids' favourite candidate",
+  "Beginner"
+ ],
+ "last_prepared": "",
+ "main_ingredient": "Vegetarian",
+ "notes": "",
+ "notion_id": "40e3c877b17281149e01d25156f0c006",
+ "notion_url": "https://app.notion.com/p/40e3c877b17281149e01d25156f0c006",
+ "page_url": "https://branovaclav.github.io/kucharka-recepty/recipes/palacinky.html",
+ "ratings": {
+  "andrej": "",
+  "brano": "",
+  "lukas": "",
+  "overall": "",
+  "tomas": "",
+  "zuzka": ""
+ },
+ "source_url": "https://www.toprecepty.cz/recept/11511-palacinky/",
+ "theme": "smalt",
+ "title": "Palačinky",
+ "total_time": 75
+}

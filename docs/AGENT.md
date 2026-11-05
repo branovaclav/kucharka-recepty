@@ -1,109 +1,145 @@
 # Agent handover — Rodinná kuchařka
 
-Everything a new agent needs with **only this repo + a Notion connector + `gh` as branovaclav**.
+This file has everything a new agent needs, given **only this repo, a Notion connector and `gh` logged in as branovaclav**.
+Read it top to bottom once. The Markdown format is in [CONTENT-FORMAT.md](CONTENT-FORMAT.md), and the visual components are in
+[`themes/smalt/cookbook.md`](../themes/smalt/cookbook.md).
 
 ## Purpose
 
-A private family cookbook:
+A private family cookbook (Braňo, Zuzka and the boys Andrej, Tomáš, Lukáš):
 
-- **Reading / cooking view:** standalone static HTML pages in Smalt design A (“Smalt & puntík”), published on GitHub Pages, embeddable in Notion (framing detection + “⤢ Otevřít na celou obrazovku”).
-- **Admin / source of truth for family data:** English Notion workspace (ratings, last prepared, notes, labels, time, difficulty, appliances, ingredients, “at home”).
-- **Bridge:** deterministic Python sync (`tools/sync.py`) that updates only the family regions on each page and regenerates the index. Recipe *text* (ingredients, steps, tips) is never rewritten by sync — it is the original Czech/Slovak source, kept in `tools/content/*.json` and baked into the HTML by `tools/render.py`.
+- **Cooking view.** Standalone static HTML pages on GitHub Pages, made for iPad and iPhone and embeddable in Notion. Inside a
+  Notion frame the page detects it is framed and shows the „⤢ Otevřít na celou obrazovku“ button.
+- **Admin, and the source of truth for family data.** An English Notion workspace holds ratings, last prepared, notes,
+  labels, time, difficulty, appliances, ingredients, "at home" and theme.
+- **Recipe text.** The original Czech/Slovak source text, verbatim, in `content/<slug>.md`, plus clearly marked tips of our own.
 
-Live site: https://branovaclav.github.io/kucharka-recepty/  
-Repo: https://github.com/branovaclav/kucharka-recepty (`gh` logged in as **branovaclav**).
+Live site: https://branovaclav.github.io/kucharka-recepty/ · Repo: https://github.com/branovaclav/kucharka-recepty
 
-## Architecture (one picture)
+## Architecture: the waterfall
 
 ```
-Notion (English admin)          tools/content/<slug>.json     tools/style/* + cookbook/
-  ratings, time, labels,    +   verbatim CZ/SK recipe text  + Smalt CSS/JS components
-  appliances, ingredients       + our tip boxes only
-                 \                    |                    /
-                  \                   v                   /
-                   \            tools/render.py         /
-                    \           → recipes/<slug>.html  /
-                     \               (full page)      /
-                      \                |             /
-                       +------→ tools/sync.py ←------+
-                                  | updates data-sync regions + recipe-meta
-                                  | regenerates index.html from template
-                                  v
-                     GitHub Pages (branovaclav.github.io/kucharka-recepty)
+ Notion (English admin)                     humans / agents
+   │  tools/sync.py  (assistant's box, daily ~04:00 Europe/Prague or on demand)
+   ▼                                            │ edit
+ data/<slug>.json  ── commit "sync: notion → json" ──┐        content/<slug>.md  (front matter + verbatim body)
+                                                      │        themes/<id>/       (CSS, fonts, components)
+                                                      ▼                │
+                        GitHub Action .github/workflows/build.yml  (every push to main)
+                          1. tools/apply_json.py   data/*.json  → front matter of content/*.md   (Notion wins for synced keys)
+                          2. tools/build.py        content/*.md + themes/<theme>/ → recipes/<slug>.html, themes/*/preview.html, recipes/fonts/
+                          3. tools/build_index.py  front matter → index.html
+                          → at most ONE commit "build: json → md → html [skip ci]" (only if something changed)
+                          → asks GitHub Pages to rebuild
+                                                      ▼
+                         GitHub Pages (legacy "deploy from branch": main /)
 ```
 
-- **Notion** owns mutable family state.
-- **Content JSON** owns immutable-ish source text (+ our marked tip boxes).
-- **HTML pages** are the cooking UI; sync patches them in place.
-- **`designs/`** are frozen visual proposals (A/B/C). Official pages use A only. Never auto-edit `designs/`.
+| Layer | Owner | Edited by |
+|---|---|---|
+| `data/<slug>.json` | **Notion**. `tools/sync.py` writes it and nothing else does. | sync only. Never edit by hand except for a test. |
+| `content/<slug>.md` front matter, **synced keys** | Notion, via the JSON | `apply_json.py`. Hand edits are overwritten. |
+| `content/<slug>.md` front matter, other keys + body | the Markdown | humans and agents |
+| `themes/<id>/` | presentation | humans and agents |
+| `recipes/*.html`, `index.html`, `themes/*/preview.html`, `recipes/fonts/` | **generated** | build only. Never hand-edit. |
+| `designs/` | frozen design proposals A/B/C | nobody (Braňo asked to keep them as they are) |
+
+Loop guard: the job runs only when `github.actor != 'github-actions[bot]'`, the bot commit carries `[skip ci]`, and pushes
+made with `GITHUB_TOKEN` never start workflows anyway. All builds are deterministic: the same input gives the same bytes, so
+an unchanged input gives no commit.
+
+## Repo layout
+
+```
+.github/workflows/build.yml   the waterfall Action
+data/<slug>.json              Notion snapshot per recipe (sync output)
+content/<slug>.md             recipe: YAML front matter + verbatim body  (format: docs/CONTENT-FORMAT.md)
+content/img/<file>.jpg        web-ready photos embedded by build.py
+content/img/originals/        photos as downloaded from the credited source (input of tools/images.py)
+themes/
+  _shared/                    tints.css icons.css official.css script.js (used by every theme)
+  smalt/                      DEFAULT. theme.json fonts.css design.css fonts/ cookbook.md (component catalogue + O-sections)
+                              index.css index.template.html (the index is always Smalt; the „Správa v Notion“ link lives here)
+  len/  sesit/                alternative themes: theme.json fonts.css design.css fonts/ cookbook.md
+  <id>/preview.html           GENERATED: the reference recipe (kureci-rizek) rendered in that theme
+recipes/<slug>.html           GENERATED cooking pages (inline CSS/JS, base64 photos)
+recipes/fonts/*.woff2         GENERATED copy of every theme's fonts
+index.html                    GENERATED recipe list + filters
+images/thumbs/<slug>.jpg      index cards 480×360 (tools/images.py)
+images/covers/<slug>.jpg      Notion covers ≤1200 px (tools/images.py)
+tools/
+  vocab.py                    vocabularies: labels CS, the six appliances, difficulty, ratings, people, tints, site URL
+  recipe_md.py                Markdown + front-matter parser/writer
+  apply_json.py  build.py  build_index.py   the three Action steps
+  sync.py                     Notion → data/*.json, commit + push
+  mcp_to_input.py             Notion MCP SQL exports → notion.json for sync --input
+  images.py                   photo preparation (Pillow, run by hand)
+designs/                      FROZEN previews A Smalt, B Len, C Sešit (served at /designs/) — do not touch
+docs/AGENT.md  docs/CONTENT-FORMAT.md  AGENTS.md  README.md
+robots.txt  .nojekyll
+assets/, images/kureci-rizek-*.jpg   leftovers of the very first sample, unused; harmless
+```
+
+Every HTML page has `<meta name="robots" content="noindex,nofollow">`, and the root `robots.txt` is `Disallow: /`. Keep both.
 
 ## Live URLs
 
 | What | URL |
 |---|---|
 | Index | https://branovaclav.github.io/kucharka-recepty/ |
-| Kuřecí řízek | …/recipes/kureci-rizek.html |
-| Bryndzové halušky | …/recipes/bryndzove-halusky.html |
-| Špagety carbonara | …/recipes/spagety-carbonara.html |
-| Palačinky | …/recipes/palacinky.html |
-| Design previews (frozen) | …/designs/ (A Smalt, B Len, C Sesit) |
-| Fonts / thumbs / covers | …/recipes/fonts/*.woff2, …/images/thumbs/<slug>.jpg, …/images/covers/<slug>.jpg |
+| Recipes | …/recipes/kureci-rizek.html · bryndzove-halusky.html · spagety-carbonara.html · palacinky.html |
+| Theme previews | …/themes/smalt/preview.html · …/themes/len/preview.html · …/themes/sesit/preview.html |
+| Frozen design proposals | …/designs/ (A Smalt, B Len, C Sešit) |
+| Assets | …/recipes/fonts/*.woff2 · …/images/thumbs/<slug>.jpg · …/images/covers/<slug>.jpg |
 
-Every HTML page has `<meta name="robots" content="noindex,nofollow">`. Root `robots.txt` is `Disallow: /`. Keep both.
-
-## Notion URLs (English admin)
+## Notion (English admin)
 
 | Page / DB | URL / id |
 |---|---|
 | Top page **Family Cookbook** | https://app.notion.com/p/40e3c877b172818686f5d1fe12709436 |
-| **Recipes** database | https://app.notion.com/p/f8d3a6ad1aee4910ac9e467957aa884f · collection `9b68c9d5-1b02-4da1-93e6-2f8f7ca09fec` |
-| **Ingredients** database | https://app.notion.com/p/e1f1a5becfd84653a38314ddb4587679 · collection `149886f0-356c-4c6e-9ea9-7dd23726f825` |
-| **Appliances** database | https://app.notion.com/p/617f1856c64c4419a602eb73084a0dd6 · collection `989e8ee4-75b8-4a27-ac47-2bc880709ef2` |
+| **Recipes** | https://app.notion.com/p/f8d3a6ad1aee4910ac9e467957aa884f · `collection://9b68c9d5-1b02-4da1-93e6-2f8f7ca09fec` |
+| **Ingredients** | https://app.notion.com/p/e1f1a5becfd84653a38314ddb4587679 · `collection://149886f0-356c-4c6e-9ea9-7dd23726f825` |
+| **Appliances** | https://app.notion.com/p/617f1856c64c4419a602eb73084a0dd6 · `collection://989e8ee4-75b8-4a27-ac47-2bc880709ef2` |
 
-The same `app.notion.com/p/…` links work for the owner and for guests once the page/DB is shared with them. The static index links to the Family Cookbook top page as **„Správa v Notion“**.
+The same links work for the owner and for guests the pages are shared with. The index links to the top page as „Správa v Notion“.
 
-### Recipes DB — properties
+### Recipes DB properties
 
-| Property | Type | Notes |
+| Property | Type | → data/front matter key |
 |---|---|---|
-| Title | title | Czech recipe name (page H1) |
-| Overall, Braňo, Zuzka, Andrej, Tomáš, Lukáš | select | **Loved / OK / Disliked** only. Leave empty until real data exists. |
-| Last prepared | date | Empty until cooked. |
-| Labels | multi-select | Beginner, Classic, Fried, Kids' favourite candidate, Sweet, Meatless, To try, Slovak, Italian, Quick, Weekend — **no commas in option names**. |
-| Total time | number | Minutes. |
-| Difficulty | select | Easy / Medium / Hard → Czech Snadné / Střední / Náročné. |
-| Main ingredient | select | Poultry · Pork & beef · Minced meat · **Pasta / rice / potatoes** · Fish & seafood · Vegetarian → CSS tint (see cookbook §O3). |
-| Appliances | relation → Appliances | Only the six owned appliances. |
-| Ingredients | relation → Ingredients | Auto-add new ingredient rows when needed; English Name + Czech name. |
-| Notes | rich text | Empty until real notes. |
-| Page | url | Live cooking URL `…/recipes/<slug>.html`. |
-| Source | url | Original recipe URL. |
-| At home count | rollup | From Ingredients.At home. |
-| Have at home | formula | `format(prop("At home count")) + " / " + format(length(prop("Ingredients")))` |
+| Title | title | `title` (Czech recipe name) |
+| Theme | select `smalt · len · sesit` | `theme`. Empty = keep the Markdown value. |
+| Overall, Braňo, Zuzka, Andrej, Tomáš, Lukáš | select **Loved / OK / Disliked** | `ratings.*`. Empty until real data. A blank person shows the Overall value as „jako rodina“. |
+| Last prepared | date | `last_prepared` (empty until cooked) |
+| Labels | multi-select (Beginner, Classic, Fried, Kids' favourite candidate, Sweet, Meatless, To try, Slovak, Italian, Quick, Weekend) | `labels`. **No commas in option names.** A new label needs a Czech name in `vocab.LABELS_CS`. |
+| Total time | number (minutes) | `total_time` |
+| Difficulty | select Easy / Medium / Hard | `difficulty` → Snadné / Střední / Náročné |
+| Main ingredient | select Poultry · Pork & beef · Minced meat · Pasta / rice / potatoes · Fish & seafood · Vegetarian | `main_ingredient` → `tint` |
+| Appliances | relation → Appliances | `appliances` (English names) |
+| Ingredients | relation → Ingredients | `ingredients` `{name, cs}` (index filter only; the checklist text comes from the Markdown) |
+| Notes | text | `notes` (empty until real notes) |
+| Page | url | `page_url` = `…/recipes/<slug>.html`. **This fixes the slug for a new row.** |
+| Source | url | `source_url` |
+| At home count / Have at home | rollup / formula | not synced (pantry helper) |
 
-Views: **Gallery**, **Under 45 min**, **Table**.
+Views: Gallery, Under 45 min, Table. **A manual step that tools cannot do:** Gallery → Layout → Card preview → **Page cover**.
 
-**Manual step (tools cannot set this):** Gallery → Layout → Card preview → **Page cover**.
-
-Each recipe page body should contain only:
-
+Each recipe page in Notion has a cover `…/images/covers/<slug>.jpg`, and a body that contains only:
 ```
 ## 📱 Cooking view
 <embed source="https://branovaclav.github.io/kucharka-recepty/recipes/<slug>.html"></embed>
 ⤢ [Open full screen](https://branovaclav.github.io/kucharka-recepty/recipes/<slug>.html)
 ```
 
-Plus a cover image pointing at `…/images/covers/<slug>.jpg`.
-
 ### Ingredients DB
+Name (English title), Czech name (shown in the index filter), At home (checkbox; keep existing ticks), Category, kids' likes
+(Andrej/Tomáš/Lukáš: Loves/OK/Dislikes), Recipes (dual relation). Reuse rows instead of making duplicates. Choices already
+made: plain flour ≠ semi-coarse flour; pancetta/mangalica → Bacon; yolks → Eggs; sunflower oil → Cooking oil. When you add a
+recipe, create the missing ingredient rows and leave At home unticked.
 
-- **Name** (English title), **Czech name** (what the index filter chips show), **At home** (checkbox — preserve existing ticks), **Category**, kids’ likes (Andrej/Tomáš/Lukáš: Loves/OK/Dislikes), **Recipes** (dual relation).
-- Naming choices already made: keep plain flour ≠ semi-coarse flour; pancetta/mangalica bacon → **Bacon**; yolks → **Eggs**; sunflower oil → **Cooking oil**. Prefer reusing rows over duplicates.
-- **Auto-add** missing ingredients when creating a recipe; leave **At home** unticked for new ones.
+### Appliances DB: exactly six. Ask Braňo before adding any.
 
-### Appliances DB (exactly six — ask before adding)
-
-| Name | Key | Czech |
+| Name | key | Czech |
 |---|---|---|
 | Gas stove | gas-stove | Plynový sporák |
 | Air fryer | air-fryer | Horkovzdušná fritéza |
@@ -112,153 +148,128 @@ Plus a cover image pointing at `…/images/covers/<slug>.jpg`.
 | Oven (grill + steam) | oven | Trouba (gril + pára) |
 | Meat probe | meat-probe | Sonda do masa (jen v troubě) |
 
-**Meat probe is wired to the oven and works only there.** Never suggest it for pan, pot, or air fryer. Extra tools (grater, whisk, ladle, pans…) may appear in original recipe text; do **not** add them as Appliances without Braňo's confirmation — report them instead.
+**The meat probe is wired to the oven and works only there.** Never suggest it for a pan, a pot or the air fryer. Other tools
+(grater, whisk, …) may appear in the original text, but they are not Appliances. The mapping and its order live in `tools/vocab.py APPLIANCES`.
 
-## Repo layout
+## Sync: Notion → data/*.json
 
-```
-index.html                 # GENERATED by sync from tools/index.template.html — edit the template
-recipes/<slug>.html        # one cooking page per recipe (inline CSS/JS + base64 photos)
-recipes/fonts/*.woff2      # Fraunces + Atkinson (relative url("fonts/…"); index rewrites to recipes/fonts/)
-images/thumbs/<slug>.jpg   # index cards 480×360
-images/covers/<slug>.jpg   # Notion covers ≤1200
-tools/
-  content/<slug>.json      # verbatim source text + our tip boxes (input to render)
-  content/_make.py         # one-off generator that wrote the four JSONs
-  img/                     # source photos as downloaded
-  style/                   # fonts.css tints.css icons.css design.css official.css index.css script.js
-  index.template.html      # index skeleton (Notion link lives HERE so sync keeps it)
-  render.py                # content JSON → page + thumb + cover
-  sync.py                  # Notion dump/API → patch pages + rebuild index + commit/push
-  mcp_to_input.py          # Notion MCP SQL exports → notion.json for sync --input
-cookbook/cookbook.md       # canonical Smalt + official O1–O9 (component truth)
-designs/                   # FROZEN A/B/C previews on Pages — do not touch unless asked
-docs/AGENT.md              # this file
-AGENTS.md                  # short pointer
-robots.txt, .nojekyll
+**Ownership.** The assistant (Grok Bot) runs the sync on its box, through the Notion MCP connector. The box has no Notion
+token. Intended schedule: daily ~**04:00 Europe/Prague**, plus on demand after Braňo edits Notion. Nothing on GitHub reads
+Notion. The sync touches **only `data/`** and pushes at most one commit, `sync: notion → json`. The Action does the rest.
+
+```bash
+# A) MCP mode (what the assistant does). Export the three DBs with notion-query-data-sources, save each result to a file:
+#   Recipes:     SELECT url, "Title", "Theme", "Overall", "Braňo", "Zuzka", "Andrej", "Tomáš", "Lukáš", "date:Last prepared:start",
+#                "Labels", "Total time", "Difficulty", "Main ingredient", "Appliances", "Ingredients", "Notes", "Page", "Source"
+#                FROM "collection://9b68c9d5-1b02-4da1-93e6-2f8f7ca09fec"
+#   Ingredients: SELECT url, "Name", "Czech name" FROM "collection://149886f0-356c-4c6e-9ea9-7dd23726f825"
+#   Appliances:  SELECT url, "Name", "Czech name", "Key" FROM "collection://989e8ee4-75b8-4a27-ac47-2bc880709ef2"
+python3 tools/mcp_to_input.py recipes.json ingredients.json appliances.json > notion.json
+python3 tools/sync.py --input notion.json --report last-report.json
+
+# B) Notion API mode (needs an integration token shared with the Recipes DB; never tried yet)
+NOTION_TOKEN=secret_… NOTION_RECIPES_DB=f8d3a6ad1aee4910ac9e467957aa884f python3 tools/sync.py
 ```
 
-Working sources for the three design proposals also exist on the agent box at `/workspace/designs/` (smalt, len, sesit + `_src/`). The published copies under `designs/` in the repo are what Pages serves; keep them as they are.
+Options: `--repo PATH` · `--no-pull` (skip the initial `git pull --rebase --autostash`) · `--no-commit` (write files only) ·
+`--no-push` · `--dry-run` (list the files that would change; writes nothing) · `--report FILE`.
+Output: "No changes — nothing committed." when Notion is unchanged. Warnings cover a missing Page URL, a data file without
+Markdown, appliances that are not among the six, and a Notion row that was deleted (its data file is left in place, never auto-deleted).
+On the assistant's box, the working copy is `/workspace/kucharka-recepty` and the dumps live in `/workspace/kucharka-sync/`.
 
-## Curation rules (non-negotiable)
+Slug matching: an existing data file is matched by `notion_id`, else by the slug in Notion's `Page` URL, else a new slug is
+made from the title. A **title change in Notion changes only the displayed title, never the URL.**
 
-1. Human-written, popular, well-rated **Czech/Slovak** sources only. Beginner- and kid-friendly.
-2. Copy **original text verbatim** (ingredients, steps, author tips). No rewriting, no translating Slovak → Czech, no “fixing”.
-3. Our additions only in marked boxes: „Náš tip“, „náš doplněk“, sidenote, warning (`cookbook.md` §7.17–7.21 / O2).
-4. Credit source + author **top and bottom**; credit photos.
-5. Our tips may use only the six appliances; meat probe = oven only.
-6. Page weight ~150–300 KB (hero 720 q86, step photos 720 q70). Slightly under 150 KB is OK if the source photo is small.
-7. Keep `noindex` + `robots.txt`. This is a private family site on a public host.
+## Running the build locally
+
+```bash
+pip install pyyaml            # only dependency of the build (images.py additionally needs Pillow)
+python3 tools/apply_json.py && python3 tools/build.py && python3 tools/build_index.py
+```
+Each step prints JSON listing the files it changed. A second run must print empty `changed` lists. Commit the outputs or let
+the Action do it; both give identical bytes.
 
 ## How to add a recipe end-to-end
 
-1. **Pick a source** (Toprecepty, Varecha, …). Save photos into `tools/img/`.
-2. **Write** `tools/content/<slug>.json` — see existing files and `cookbook.md` §O8 for fields. Put our tips only in the marked tip structures. Set `tint` from Main ingredient (§O3); document any deliberate deviation (carbonara → pasta-rice).
-3. **Render:** `python3 tools/render.py <slug>` → `recipes/<slug>.html`, thumb, cover. Keeps family meta if the page already has a `notion_id`.
-4. **Notion row** in Recipes:
-   - Fill Title, Total time, Difficulty, Labels, Main ingredient, Source URL, Page URL, cover.
-   - Relate Appliances (only from the six) and Ingredients (auto-create missing ingredient pages with English Name + Czech name; At home unticked).
-   - Leave Overall / person ratings / Last prepared / Notes **empty**.
-   - Body = Cooking view embed + full-screen link (syntax above).
-   - Icon optional (🍗 🧀 🍝 🥞 style).
-5. **Sync** (below). Confirm live URL 200, no horizontal scroll at 375/393 and iPad 820×1180 / 1180×820.
-6. If Gallery cards look wrong: manually set Card preview → Page cover.
+1. **Pick a source** that follows the curation rules below. Save its photos to `content/img/originals/`.
+2. **Write `content/<slug>.md`.** Copy an existing file. Fill in the non-synced front matter (slug, lang, source, hero,
+   servings, time_note, ingredients_note) and paste the source text **verbatim** into the body
+   ([CONTENT-FORMAT.md](CONTENT-FORMAT.md)). Our additions go only into `::: our-tip`, `::: note` or `::: warning`.
+   You may leave the synced keys empty; they fill in from Notion.
+3. **Photos:** `python3 tools/images.py <slug>` → `content/img/…`, thumb, cover.
+4. **Notion row** in Recipes: Title, Theme (smalt), Total time, Difficulty, Labels, Main ingredient, Source, and
+   **Page = `https://branovaclav.github.io/kucharka-recepty/recipes/<slug>.html`**. Relate Appliances (from the six only) and
+   Ingredients (create the missing ones). Set the cover to `…/images/covers/<slug>.jpg`. The body is the embed + link above.
+   **Leave Overall, the person ratings, Last prepared and Notes empty.**
+5. **Data JSON:** run the sync (it creates `data/<slug>.json`). Or commit everything together: run the sync with `--no-commit`,
+   then commit md + images + data in one go.
+6. **Push.** The Action builds the page and the index. Verify: the live URL returns 200, there is no horizontal scroll at
+   375/393 px and iPad 820×1180 / 1180×820, the Notion embed shows the page, and „⤢“ opens it.
 
-## Sync
+## Switching a theme
 
-### Modes
+Set **Theme** on the recipe's Notion row (`smalt`, `len` or `sesit`) and run the sync. Or, if the Notion Theme is empty, set
+`theme:` in the Markdown front matter and push. The Notion value wins when it is set. Compare the themes first at
+`…/themes/<id>/preview.html`. Braňo chose **smalt** as the official look, and the index always uses smalt (`vocab.INDEX_THEME`).
 
-```bash
-# A) From a Notion dump (what the assistant does via Notion MCP — no token on the box yet)
-python3 tools/mcp_to_input.py recipes.json ingredients.json appliances.json > notion.json
-python3 tools/sync.py --input notion.json [--report out.json] [--no-push] [--dry-run]
+To **add a theme**, create `themes/<id>/` with `theme.json`
+(`{"name","letter","theme_color","css":["fonts.css","design.css"],"fonts":[…],"status"}`), `fonts.css` (`url("fonts/…")`),
+`design.css` and `fonts/`. Font file names must be unique across themes, because they all land in `recipes/fonts/`. Every
+theme styles the same markup. The components are listed in `themes/smalt/cookbook.md` §7 and the O-sections. CSS order on a
+page: theme fonts.css → `_shared/tints.css` → `_shared/icons.css` → theme design.css → `_shared/official.css`. If you add an
+option to the Notion Theme select, you need the matching folder.
 
-# B) Direct Notion API (untested by the assistant so far)
-NOTION_TOKEN=secret_… NOTION_RECIPES_DB=f8d3a6ad1aee4910ac9e467957aa884f \
-  python3 tools/sync.py
-```
+## Renaming a slug (manual)
 
-Options: `--repo PATH` · `--no-push` · `--dry-run` (lists page files that would change, writes nothing) · `--report FILE`.
+Slugs are stable on purpose: Notion embeds, covers and bookmarks point at them. If a rename is really needed:
+`git mv content/<old>.md content/<new>.md` (and change `slug:` inside), `git mv data/<old>.json data/<new>.json`, and do the
+same for thumbs and covers. Update the Notion `Page`, the embed, the link and the cover URL. Delete `recipes/<old>.html` or
+replace it with a meta-refresh stub. Push.
 
-### What MCP export looks like
+## Curation rules (non-negotiable)
 
-Use Notion MCP `notion-query-data-sources` SQL against the three collection:// URLs:
+1. Use only human-written, popular, well-rated **Czech/Slovak** sources that suit beginners and kids.
+2. Copy the **original text verbatim**: ingredients, steps and the author's tips. No rewriting, no translating Slovak, no "fixing".
+3. Put our additions only in the marked boxes (Náš tip / náš doplněk / Na okraj / Pozor).
+4. Credit the source and author **at the top and the bottom** of the page, and credit the photos.
+5. Our tips may use only the six appliances. The meat probe is oven-only.
+6. Keep the page weight around 150–300 KB (hero 720 px q86, step photos 720 px q70).
+7. Keep `noindex` and `robots.txt`. This is a private family site on a public host.
+8. Ratings, last prepared and notes hold **real data only**. Never invent them.
 
-- Recipes: `Title, Overall, Braňo, Zuzka, Andrej, Tomáš, Lukáš, date:Last prepared:start, Labels, Total time, Difficulty, Main ingredient, Appliances, Ingredients, Notes, Page, Source`
-- Ingredients: `Name, Czech name` (+ url)
-- Appliances: `Name, Czech name, Key` (+ url)
+## GitHub settings
 
-Then `mcp_to_input.py`. A sample dump often lives on the agent box under `/workspace/kucharka-sync/` (not in the repo).
-
-### What sync touches
-
-- `data-sync` regions: `title total_time difficulty labels appliances rating_overall rating_brano|zuzka|andrej|tomas|lukas last_prepared notes`
-- `<script type="application/json" id="recipe-meta">` (sort_keys, indent 1, ensure_ascii False, `</` escaped)
-- `body` tint from Main ingredient
-- Regenerates **`index.html` from `tools/index.template.html`** (so put durable UI like the Notion link in the **template**, not only in the generated file)
-- On title-slug rename: new page + redirect stub at old URL (`meta name="kucharka-redirect"`), `git mv` thumbs/covers, report Notion Page/cover URLs to update
-- Stages only `recipes/ images/thumbs images/covers index.html`; commits only if staged; pushes with retries
-- Idempotent: same input twice → “No changes — nothing committed.”
-
-Recipe body text is **never** modified by sync.
-
-### Daily plan (intended)
-
-Run sync ~**04:00 Europe/Prague** so overnight Notion edits land on Pages before breakfast. Implement as a routine/cron that exports Notion → `sync.py --input`. Until a token is on the box, the assistant (or a routine with Notion MCP) must produce `notion.json`.
-
-### Rating inheritance on the page
-
-Blank person rating → shows Overall with `data-inherited` (dashed rim + „· jako rodina“). Both blank → „Zatím nehodnotil“ (Zuzka: „nehodnotila“). Overall blank → „Zatím nehodnoceno“. Notes blank → „Zatím bez poznámek.“
-
-## Design previews
-
-| Letter | Name | Path |
-|---|---|---|
-| A | Smalt & puntík (**official**) | `designs/smalt/` + live recipes |
-| B | Len | `designs/len/` |
-| C | Babiččin sešit | `designs/sesit/` |
-
-Index: https://branovaclav.github.io/kucharka-recepty/designs/  
-Braňo chose A for now; keep B/C on Pages as they are. Box sources: `/workspace/designs/`.
+- Pages: **Deploy from a branch → main / (root)**.
+- The workflow sets its own `permissions: contents: write, pages: write`, so the repo default "read" is fine. If the build
+  step's push ever fails with 403, set Settings → Actions → General → Workflow permissions → **Read and write permissions**.
+- `gh` on the assistant's box is logged in as branovaclav, with the `repo` and `workflow` scopes.
 
 ## Verification checklist
 
 ```bash
-# after push
+gh run list --workflow build.yml -L 3          # last runs: expect "completed success"
 gh api repos/branovaclav/kucharka-recepty/pages/builds/latest --jq '.status,.commit'
-curl -sI https://branovaclav.github.io/kucharka-recepty/ | head -1
-# recipes, fonts, thumbs, covers, designs/ — expect 200
-# Playwright: 375, 393, 820×1180, 1180×820 — no horizontal overflow (see /workspace/official/check.py pattern)
+for u in "" recipes/kureci-rizek.html themes/len/preview.html designs/ recipes/fonts/fraunces.woff2 images/thumbs/palacinky.jpg; do
+  curl -s -o /dev/null -w "%{http_code} $u\n" "https://branovaclav.github.io/kucharka-recepty/$u"; done
 ```
-
-GitHub Pages 5xx → retry. Prefer `authorized_by` for pushes when the host requires it.
+Use Playwright for layout: no horizontal overflow at 375, 393, 820×1180 and 1180×820, and no JS errors. GitHub 5xx → retry.
 
 ## What NOT to do
 
-- **Do not** rewrite, translate, or “improve” author recipe text.
-- **Do not** invent ratings / last prepared / notes — leave empty until real.
-- **Do not** add appliances beyond the six without asking Braňo.
-- **Do not** touch `designs/` unless explicitly asked.
-- **Do not** push to any other repository (no “kucharka app” repo, no unrelated sites).
-- **Do not** remove `noindex` / `robots.txt`.
-- **Do not** delete Notion pages/DBs without confirmation; restructure in place.
-- **Do not** implement Markdown↔theme content/presentation split until Braňo decides (proposal pending).
-- **Do not** edit `index.html` by hand for durable chrome — edit `tools/index.template.html` then run sync (or at least rebuild the index).
+- Do not rewrite, translate or “improve” author text.
+- Do not invent ratings, last prepared or notes.
+- Do not add appliances beyond the six without asking Braňo.
+- Do not hand-edit generated files (`recipes/*.html`, `index.html`, `themes/*/preview.html`) or the synced front-matter keys.
+- Do not touch `designs/`.
+- Do not push to any other repository.
+- Do not delete Notion pages or DBs without confirmation; restructure them in place.
+- Do not remove `noindex` or `robots.txt`.
 
-## Key file pointers
+## Current recipes
 
-- Component CSS order on a recipe page: `fonts.css` + `tints.css` + `icons.css` + `design.css` + `official.css` (inlined by render).
-- Shared checklist script: `tools/style/script.js` — keys localStorage by `#recipe[data-recipe-id]`; group `<li class="checklist-group">` without a button is safe.
-- Redirect stub template is inside `sync.py` (`REDIRECT`).
-- Vocabularies (LABELS_CS, APPLIANCES, DIFFICULTY, RATING, MAIN_TINT) live at the top of `sync.py` — keep Notion option names in sync (especially **Pasta / rice / potatoes**, no commas).
-
-## Current recipes (seed)
-
-| Slug | Source | Author | Tint |
-|---|---|---|---|
-| kureci-rizek | Toprecepty.cz | blazena.blazkova | chicken |
-| bryndzove-halusky | Varecha.sk | Jana Štrbková | pasta-rice |
-| spagety-carbonara | Toprecepty.cz | Eliza | pasta-rice (bacon is flavouring) |
-| palacinky | Toprecepty.cz | lnk-lnk (photo ivulinka) | veg |
-
-When in doubt: read `cookbook/cookbook.md` O-sections, then the matching `@c:…` component, then an existing `tools/content/*.json` + its rendered HTML.
+| Slug | Source | Author | Tint | Theme |
+|---|---|---|---|---|
+| kureci-rizek | Toprecepty.cz | blazena.blazkova | chicken | smalt |
+| bryndzove-halusky | Varecha.sk (sk) | Jana Štrbková | pasta-rice | smalt |
+| spagety-carbonara | Toprecepty.cz | Eliza | pasta-rice (the bacon is a flavouring) | smalt |
+| palacinky | Toprecepty.cz | lnk-lnk (photo ivulinka) | veg | smalt |

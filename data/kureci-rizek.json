@@ -1,0 +1,65 @@
+{
+ "appliances": [
+  "Gas stove",
+  "Air fryer"
+ ],
+ "difficulty": "Easy",
+ "ingredients": [
+  {
+   "cs": "Mletý pepř",
+   "name": "Black pepper"
+  },
+  {
+   "cs": "Strouhanka",
+   "name": "Breadcrumbs"
+  },
+  {
+   "cs": "Kuřecí maso",
+   "name": "Chicken"
+  },
+  {
+   "cs": "Olej",
+   "name": "Cooking oil"
+  },
+  {
+   "cs": "Vejce",
+   "name": "Eggs"
+  },
+  {
+   "cs": "Mléko",
+   "name": "Milk"
+  },
+  {
+   "cs": "Hladká mouka",
+   "name": "Plain flour"
+  },
+  {
+   "cs": "Sůl",
+   "name": "Salt"
+  }
+ ],
+ "labels": [
+  "Beginner",
+  "Classic",
+  "Fried",
+  "Kids' favourite candidate"
+ ],
+ "last_prepared": "",
+ "main_ingredient": "Poultry",
+ "notes": "",
+ "notion_id": "40e3c877b1728186bca5fb185cd68887",
+ "notion_url": "https://app.notion.com/p/40e3c877b1728186bca5fb185cd68887",
+ "page_url": "https://branovaclav.github.io/kucharka-recepty/recipes/kureci-rizek.html",
+ "ratings": {
+  "andrej": "",
+  "brano": "",
+  "lukas": "",
+  "overall": "",
+  "tomas": "",
+  "zuzka": ""
+ },
+ "source_url": "https://www.toprecepty.cz/recept/23122-kureci-rizek/",
+ "theme": "smalt",
+ "title": "Kuřecí řízek",
+ "total_time": 40
+}

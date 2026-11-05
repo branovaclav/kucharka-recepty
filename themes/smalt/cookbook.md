@@ -3,10 +3,12 @@
 **This file is the single source of truth for the official recipe site.**
 Live site: https://branovaclav.github.io/kucharka-recepty/ · design previews (frozen, do not edit): `/designs/`.
 
-It is the design-A cookbook (sections 1–8 below, unchanged from `designs/smalt`, kept for the component catalogue)
+It is the design-A cookbook (sections 1–8 below, unchanged from `designs/smalt`, kept as the component catalogue)
 **plus the "Official site" part (sections O1–O9 at the end), which wins wherever they differ.**
-The real CSS/JS used in production lives in `tools/style/*` — the snippets in §7 document the components; if a snippet and
-`tools/style` disagree, `tools/style` is authoritative.
+Production CSS/JS lives in `themes/smalt/{fonts,design,index}.css` + `themes/_shared/{tints,icons,official}.css, script.js`;
+the markup is produced by `tools/build.py` from `content/<slug>.md`. If a snippet here and those files disagree, the files win.
+Sections 1–8 still mention the old "sync script patching `data-sync` regions". Nothing patches HTML today: every page is
+regenerated (see O1/O6), and the `data-sync` attributes remain as stable hooks for CSS and tests.
 
 ---
 
@@ -900,7 +902,7 @@ html.is-framed .frame-open { padding-top: max(.5rem, env(safe-area-inset-top)); 
 }
 ```
 
-## 8. New recipe page — checklist
+## 8. New recipe page — checklist (historic, design-phase; for the official site use O8)
 
 1. Copy this design's `kureci-rizek.html` → `recipes/<slug>.html` (keeps the full `<style>` and `<script>`).
 2. Set `<title>`, the header comment, `data-recipe-id`, `data-tint` (§3 rule).
@@ -910,41 +912,49 @@ html.is-framed .frame-open { padding-top: max(.5rem, env(safe-area-inset-top)); 
 
 ---
 
-# Official site (O-sections — authoritative)
+# Official site (O-sections, authoritative)
 
-## O1. Repository layout
+The full handover is in `docs/AGENT.md`; the Markdown format is in `docs/CONTENT-FORMAT.md`. This part only pins the rules that the
+components depend on.
+
+## O1. Pipeline and repository layout
+
+Waterfall: **Notion → `data/<slug>.json` (tools/sync.py, assistant's box) → GitHub Action on every push:
+`apply_json.py` (json → front matter of `content/<slug>.md`) → `build.py` (md + `themes/<theme>/` → `recipes/<slug>.html`)
+→ `build_index.py` (`index.html`) → one commit `build: json → md → html [skip ci]` if anything changed.**
 
 | Path | What | Edited by |
 |---|---|---|
-| `index.html` | Static recipe index (cards + filters). **Generated** by `tools/sync.py` from `tools/index.template.html`. | sync only |
-| `recipes/<slug>.html` | One standalone page per recipe, all CSS/JS/photos inline (base64). | `tools/render.py` (content) + `tools/sync.py` (family regions) |
-| `recipes/fonts/*.woff2` | Shared fonts (Fraunces, Atkinson Hyperlegible), referenced relatively as `url("fonts/…")`. The index rewrites this to `recipes/fonts/`. | — |
-| `images/thumbs/<slug>.jpg` | Index card photo, 480×360 centre crop, q74. | render |
-| `images/covers/<slug>.jpg` | Notion page cover, ≤1200 px, q80. | render |
-| `tools/content/<slug>.json` | Verbatim recipe text + our tips (input of render). `_make.py` is the one-off generator that wrote them. | human |
-| `tools/img/` | Source photos as downloaded from the credited source. | human |
-| `tools/style/` | `fonts.css tints.css icons.css design.css official.css` (page CSS, inlined in this order), `index.css`, `script.js`. | human |
-| `tools/render.py` | content JSON → full page + thumb + cover. | — |
-| `tools/sync.py` | Notion → pages/index, commit + push. | — |
-| `tools/mcp_to_input.py` | Notion MCP SQL exports → `notion.json` for `sync.py --input`. | — |
-| `designs/` | Frozen design proposals A/B/C. **Never touched by tools.** | nobody |
+| `content/<slug>.md` | front matter + verbatim recipe body | humans/agents (synced keys: Notion) |
+| `content/img/`, `content/img/originals/` | web-ready / original photos | `tools/images.py` / human |
+| `data/<slug>.json` | Notion snapshot | `tools/sync.py` only |
+| `themes/_shared/` | `tints.css icons.css official.css script.js` (all themes) | human |
+| `themes/<id>/` | `theme.json fonts.css design.css fonts/ cookbook.md` (+ `index.css index.template.html` for smalt) | human |
+| `themes/<id>/preview.html` | the reference recipe in that theme | **generated** |
+| `recipes/<slug>.html`, `recipes/fonts/` | standalone cooking pages (inline CSS/JS, base64 photos), every theme's fonts | **generated** |
+| `index.html` | recipe index (always smalt) | **generated** from `themes/smalt/index.template.html` |
+| `images/thumbs/<slug>.jpg`, `images/covers/<slug>.jpg` | index card 480×360 q74, Notion cover ≤1200 q80 | `tools/images.py` |
+| `designs/` | frozen proposals A/B/C | nobody |
 
-Every HTML file keeps `<meta name="robots" content="noindex, nofollow">`; `robots.txt` stays.
+Page CSS order: theme `fonts.css` → `_shared/tints.css` → `_shared/icons.css` → theme `design.css` → `_shared/official.css`.
+`<meta name="theme-color">` comes from `theme.json`, and `<body data-design="<theme>" data-tint="<tint>">`.
+Every HTML file keeps `<meta name="robots" content="noindex,nofollow">`; `robots.txt` stays.
 
 ## O2. Content rules (non-negotiable)
 
 1. Only human-written, popular, well-rated Czech/Slovak recipes. Beginner- and kid-friendly.
-2. The **original text is copied verbatim** — ingredients, steps, author's tips. No rewriting, no translation, no "fixing" Slovak.
-3. Anything we add lives only in a clearly marked box: `@c:tip-ours` („Náš tip“), `@c:our-inline` („náš doplněk“), `@c:sidenote`, `@c:warning`.
-4. Source credited with author and link **at the top** (`@c:topbar`) **and the bottom** (`@c:source-foot`); photo credited too.
+2. The **original text is copied verbatim**: ingredients, steps and the author's tips. No rewriting, no translation, no "fixing" Slovak.
+3. Anything we add lives only in a clearly marked box. In Markdown that is `::: our-tip` (in a step → `@c:our-inline`, in Tipy → `@c:tip-ours`),
+   `::: note` (`@c:sidenote`) or `::: warning` (`@c:warning`). The author's tips are `::: tip` (`@c:tip-source`).
+4. The source is credited with author and link **at the top** (`@c:topbar`) **and at the bottom** (`@c:source-foot`), from front matter `source:`. Photos are credited too.
 5. Our tips may use only the family kitchen: gas stove, air fryer, rice cooker, microwave, oven (grill + steam), meat probe.
-   **The meat probe is wired to the oven and works only for oven cooking** — never suggest it for pan, pot or air fryer.
-   Other tools (grater, whisk, ladle…) may be mentioned only as the original recipe uses them; new equipment needs Braňo's confirmation.
-6. Page weight ~150–300 KB (hero 720 px q86, step photos 720 px q70). Smaller is fine if the source photo is small.
+   **The meat probe is wired to the oven and works only for oven cooking.** Never suggest it for a pan, a pot or the air fryer.
+   Other tools may be mentioned only where the original recipe uses them. New equipment needs Braňo's confirmation.
+6. Page weight is ~150–300 KB (hero 720 px q86, step photos 720 px q70).
 
 ## O3. Tint per main ingredient
 
-Notion "Main ingredient" → `<body class="tint-…">`:
+Notion "Main ingredient" → front matter `tint` → `<body data-tint="…">`:
 
 | Notion | tint |
 |---|---|
@@ -955,85 +965,71 @@ Notion "Main ingredient" → `<body class="tint-…">`:
 | Fish & seafood | `fish` |
 | Vegetarian | `veg` |
 
-Choices so far: řízek → chicken; bryndzové halušky → pasta-rice (potato dough is the dish, bacon is a topping);
-carbonara → pasta-rice (pancetta/bacon is a flavouring — deliberate deviation from "meat wins"); palačinky → veg.
+Choices so far: řízek → chicken; bryndzové halušky → pasta-rice (the potato dough is the dish, the bacon is a topping);
+carbonara → pasta-rice (pancetta/bacon is a flavouring); palačinky → veg.
 
 ## O4. Page skeleton additions
 
-* `<main id="recipe" data-recipe-id="<notion id or slug>">` — `script.js` keys localStorage checkboxes by it.
-* Framing detection script in `<head>` adds `html.framed` inside Notion; `@c:frame` shows „⤢ Otevřít na celou obrazovku“.
-* `<script type="application/json" id="recipe-meta">` — machine-readable copy of the family data (see O6), read by the index build.
-  Serialised with `sort_keys`, `indent=1`, `ensure_ascii=False`, `</` escaped as `<\/`.
+* `<main id="recipe" data-recipe-id="<slug>">`. `script.js` keys the localStorage checkboxes by it.
+* A framing-detection script in `<head>` adds `html.is-framed` inside Notion; `@c:frame` then shows „⤢ Otevřít na celou obrazovku“.
+* `<script type="application/json" id="recipe-meta">` holds a machine-readable copy of the page data (slug, theme, tint, ratings…),
+  serialised with `sort_keys`, `indent=1`, `ensure_ascii=False`, and `</` escaped as `<\/`.
 
 ### `@c:checklist-group`
-A non-clickable heading inside the ingredient list (e.g. „Dále:“, „Na ozdobu:“):
-`<li class="checklist-group">Dále:</li>` — no `<button>`, so script.js's index-based keys stay stable.
+A non-clickable heading inside the ingredient list (Markdown `### Dále:` in `## Suroviny`):
+`<li class="checklist-group"><span>Dále:</span></li>`. It has no `<button>`, so script.js's index-based keys stay stable.
 
 ### `@c:rating-inherited`
 A person without their own rating shows the family (Overall) value with `data-inherited` (dashed rim + „· jako rodina“).
-No overall either → „Zatím nehodnotil“ (Zuzka: „Zatím nehodnotila“). Overall empty → „Zatím nehodnoceno“.
-Notes empty → `<p class="notes-empty">Zatím bez poznámek.</p>`.
+With no overall rating either, it shows „Zatím nehodnotil“ (Zuzka: „Zatím nehodnotila“). An empty Overall shows „Zatím nehodnoceno“.
+Empty notes show `<p class="notes-empty">Zatím bez poznámek.</p>`.
 
-### New icons
-`--i-rice-cooker`, `--i-meat-probe` in `icons.css`, mapped by `.appliance[data-value="rice-cooker|meat-probe"]`.
+### Icons
+`--i-rice-cooker` and `--i-meat-probe` in `_shared/icons.css`, mapped by `.appliance[data-value="rice-cooker|meat-probe"]`.
 
 ## O5. Index (`index.html`)
 
-Smalt header „Rodinná kuchařka“, collapsible `<details id="filters">` (open by default ≥760 px), card grid 1/2/3 columns.
-Card = thumb, title, time, difficulty pips, appliance icons, labels, overall rating colour.
-Filters (client-side, inline JSON `#recipes-data`): ingredients (card must contain **all** selected), max time (30/45/60/90),
-difficulty, appliances, labels, overall rating (loved/ok/disliked/unrated). Sort: title (cs collation), time, last prepared.
-Chips are generated only for values that occur in at least one recipe. Tested at 375/393/820×1180/1180×820.
+Smalt header „Rodinná kuchařka“ with the „Správa v Notion“ link (in the template), a collapsible `<details id="filters">` (open by
+default at ≥760 px), and a card grid of 1/2/3 columns. A card has the thumb, title, time, difficulty pips and overall rating colour.
+Filters run client-side on the inline JSON `#recipes-data`: ingredients (a card must contain **all** selected), max time
+(30/45/60/90), difficulty, appliances, labels, overall rating (loved/ok/disliked/unrated). Sort: title (cs collation), time,
+last prepared. Chips are generated only for values that occur in at least one recipe. Tested at 375/393/820×1180/1180×820.
 
-## O6. Sync contract (`data-sync` regions)
+## O6. Data contract (Notion → JSON → front matter → page)
 
-| key | Notion property | rendered |
+| Notion | data / front matter key | rendered as (`data-sync` hook) |
 |---|---|---|
-| `title` | Title | `<h1>` text |
-| `total_time` | Total time (min) | „40 min“ |
-| `difficulty` | Difficulty Easy/Medium/Hard | Snadné/Střední/Náročné + pips |
-| `labels` | Labels | Czech chips (LABELS_CS in sync.py) |
-| `appliances` | Appliances (relation → Key) | icon badges |
-| `rating_overall` | Overall Loved/OK/Disliked | Chutná/Ujde/Nechutná |
-| `rating_brano` … `rating_lukas` | Braňo, Zuzka, Andrej, Tomáš, Lukáš | see `@c:rating-inherited` |
-| `last_prepared` | Last prepared | date (e.g. „5. 11. 2026“) / „zatím ne“ |
-| `notes` | Notes | paragraphs / empty state |
+| Title | `title` | `<h1 data-sync="title">`, `<title>{title} · Rodinná kuchařka</title>` |
+| Theme | `theme` (empty = keep md) | which `themes/<id>/` styles the page |
+| Total time | `total_time` | `total_time` „40 min“ / „1 h 15 min“ |
+| Difficulty Easy/Medium/Hard | `difficulty` | `difficulty` Snadné/Střední/Náročné + pips |
+| Labels | `labels` | `labels`, Czech chips (`vocab.LABELS_CS`) |
+| Appliances | `appliances` | `appliances` icon badges, in `vocab.APPLIANCES` order |
+| Main ingredient | `main_ingredient` → `tint` | `body[data-tint]` |
+| Overall / Braňo … Lukáš | `ratings.*` | `rating_overall`, `rating_brano` … `rating_lukas` |
+| Last prepared | `last_prepared` | `last_prepared` „5. 11. 2026“ / „zatím ne“ |
+| Notes | `notes` | `notes` paragraphs / empty state |
+| Ingredients | `ingredients` | `recipe-meta` + the index ingredient filter (the checklist comes from the Markdown body) |
+| Page / Source | `page_url` / `source_url` | identity; the slug is fixed by the file name |
 
-`sync.py` replaces only the element carrying `data-sync="key"` (depth-matched close tag) and the `recipe-meta` JSON. All other
-markup (the verbatim recipe) is never touched. Ingredients are not a region — they come from the source text; the Notion
-Ingredients relation (English name + Czech name) feeds only `recipe-meta` and the index ingredient filter.
+Nothing patches HTML in place. Pages are fully regenerated, deterministically.
 
-**Matching** Notion row → page: `notion_id` in recipe-meta, else slug of the `Page` URL, else slug of the title.
-**Rename** (title slug changes): new `recipes/<new>.html` is written, the old file becomes a redirect stub
-(`<meta name="kucharka-redirect">` + meta refresh), thumbs/covers are `git mv`-ed, and the report lists the Notion `Page`/cover
-URLs to update.
-
-## O7. Running the sync
+## O7. Running the sync and the build
 
 ```bash
-# A) from an export (what the bot does via the Notion MCP connector)
-python3 tools/mcp_to_input.py recipes.json ingredients.json appliances.json > notion.json
-python3 tools/sync.py --input notion.json [--report out.json]
-
-# B) directly from the Notion API
-NOTION_TOKEN=secret_… NOTION_RECIPES_DB=f8d3a6ad1aee4910ac9e467957aa884f python3 tools/sync.py
-
-# options: --repo PATH  --no-push  --dry-run (lists page files that would change, writes nothing)
+python3 tools/mcp_to_input.py recipes.json ingredients.json appliances.json > notion.json   # MCP exports → input
+python3 tools/sync.py --input notion.json        # writes data/*.json only; one commit "sync: notion → json"; push
+python3 tools/apply_json.py && python3 tools/build.py && python3 tools/build_index.py      # what the Action runs
 ```
-It is deterministic: unchanged input → „No changes — nothing committed.“ It stages only `recipes images/thumbs images/covers
-index.html`, commits only when something is staged, and pushes with 5 retries.
 
 ## O8. Adding a new recipe
 
-1. Pick a source per O2; save photos to `tools/img/`.
-2. Write `tools/content/<slug>.json` (fields: slug, recipe_id, lang, title, tint, source{site,url,title,author,rating,rating_count,photo},
-   hero{file,alt}, lede, time_sub, servings, ingr_small, ingredients [[qty,text] | {group}], steps [{h,p[],photo?,extras[]}], tips[], foot_extra).
-3. `python3 tools/render.py <slug>` → page, thumb, cover.
-4. Create the Notion row (Recipes DB): properties, cover `…/images/covers/<slug>.jpg`, content = „📱 Cooking view“ embed + „⤢ Open full screen“ link.
-   Leave ratings / Last prepared / Notes empty — real data only.
-5. Run the sync (O7); check §5a widths; verify live URL is 200.
+Write `content/<slug>.md` (verbatim, see `docs/CONTENT-FORMAT.md`) → put the photos in `content/img/originals/` and run
+`tools/images.py <slug>` → create the Notion row (Page URL = `…/recipes/<slug>.html`, cover, the embed + „Open full screen“
+link; ratings, Last prepared and Notes left empty) → sync → push → verify the widths from §5a and a live 200.
 
 ## O9. Notion admin (English)
 
-Top page „Family Cookbook“ → Recipes (views: Gallery, Under 45 min, Table), Ingredients (At home, Category, Czech name, kids' likes),
-Appliances (the six above; Key = icon key). Recipes formula „Have at home“ = at-home ingredients / all ingredients.
+Top page „Family Cookbook“ → Recipes (views: Gallery, Under 45 min, Table; select **Theme** smalt/len/sesit), Ingredients
+(At home, Category, Czech name, kids' likes) and Appliances (the six above; Key = icon key). The Recipes formula „Have at home“ =
+at-home ingredients / all ingredients.

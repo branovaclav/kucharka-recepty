@@ -1,11 +1,22 @@
 # Agent entry point
 
-You are taking over **Rodinná kuchařka** (family cookbook): static Smalt HTML on GitHub Pages + English Notion admin + deterministic sync.
+You are taking over **Rodinná kuchařka**, a family cookbook. It is a static site on GitHub Pages, built by a GitHub Action from Markdown and themes, with an English Notion admin as the source of family data.
 
-**Read first, in this order:**
+**Waterfall:** Notion → `tools/sync.py` (assistant's box) → `data/<slug>.json` → push → Action: `apply_json.py` (json → md front matter) → `build.py` (md + theme → `recipes/*.html`) → `build_index.py` (`index.html`) → one commit `build: json → md → html [skip ci]`.
 
-1. [`docs/AGENT.md`](docs/AGENT.md) — full handover (architecture, Notion schema, how to add a recipe, sync, constraints, what not to do).
-2. [`cookbook/cookbook.md`](cookbook/cookbook.md) — canonical Smalt component catalogue + official-site sections O1–O9.
-3. [`README.md`](README.md) — short human overview and live URLs.
+Read first, in this order:
 
-Do not rewrite author recipe text. Do not touch `designs/` unless asked. Do not push to any other repo (especially a “kucharka app” repo). Ask before adding appliances beyond the six. Content↔presentation split (Markdown themes) is **not** implemented yet — Braňo is deciding; do not restructure unless he asks.
+1. [`docs/AGENT.md`](docs/AGENT.md): the full handover (architecture, Notion schema, sync, adding a recipe, themes, constraints).
+2. [`docs/CONTENT-FORMAT.md`](docs/CONTENT-FORMAT.md): the format of `content/<slug>.md`.
+3. [`themes/smalt/cookbook.md`](themes/smalt/cookbook.md): the component catalogue plus the official-site O-sections.
+4. [`README.md`](README.md): a short overview.
+
+Hard rules:
+- Edit `content/*.md` and `themes/`, never the generated HTML.
+- Never hand-edit `data/*.json` or the synced front-matter keys; Notion owns them.
+- Never rewrite the author's recipe text.
+- Do not touch `designs/`.
+- Do not push to any other repo.
+- Ask before adding appliances beyond the six. The meat probe works only in the oven.
+- Keep ratings, last prepared and notes real data only.
+- Keep `noindex` and `robots.txt`.

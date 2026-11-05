@@ -1,0 +1,4 @@
+/* @c:fonts */
+/* Self-hosted, subset (Latin + Czech/Slovak), SIL OFL. Files live next to the page in fonts/. */
+@font-face { font-family: "Newsreader"; src: url("fonts/newsreader.woff2") format("woff2"); font-weight: 400 700; font-display: swap; }
+@font-face { font-family: "Figtree"; src: url("fonts/figtree.woff2") format("woff2"); font-weight: 300 900; font-display: swap; }

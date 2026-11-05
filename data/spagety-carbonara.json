@@ -1,0 +1,59 @@
+{
+ "appliances": [
+  "Gas stove"
+ ],
+ "difficulty": "Easy",
+ "ingredients": [
+  {
+   "cs": "Slanina",
+   "name": "Bacon"
+  },
+  {
+   "cs": "Mletý pepř",
+   "name": "Black pepper"
+  },
+  {
+   "cs": "Vejce",
+   "name": "Eggs"
+  },
+  {
+   "cs": "Olivový olej",
+   "name": "Olive oil"
+  },
+  {
+   "cs": "Pecorino",
+   "name": "Pecorino"
+  },
+  {
+   "cs": "Sůl",
+   "name": "Salt"
+  },
+  {
+   "cs": "Špagety",
+   "name": "Spaghetti"
+  }
+ ],
+ "labels": [
+  "Italian",
+  "To try",
+  "Kids' favourite candidate"
+ ],
+ "last_prepared": "",
+ "main_ingredient": "Pasta / rice / potatoes",
+ "notes": "",
+ "notion_id": "40e3c877b17281ea80cfd0a9147f475c",
+ "notion_url": "https://app.notion.com/p/40e3c877b17281ea80cfd0a9147f475c",
+ "page_url": "https://branovaclav.github.io/kucharka-recepty/recipes/spagety-carbonara.html",
+ "ratings": {
+  "andrej": "",
+  "brano": "",
+  "lukas": "",
+  "overall": "",
+  "tomas": "",
+  "zuzka": ""
+ },
+ "source_url": "https://www.toprecepty.cz/recept/23296-autenticke-spagety-carbonara-podle-emanuela/",
+ "theme": "smalt",
+ "title": "Špagety carbonara",
+ "total_time": 35
+}
