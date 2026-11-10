@@ -3,7 +3,7 @@
 
   python3 tools/build.py [slug ...]
 
-* Theme = front matter `theme:` (default smalt). Each theme supplies CSS + fonts (themes/<id>/theme.json);
+* Theme = front matter `theme:` (default sesit). Each theme supplies CSS + fonts (themes/<id>/theme.json);
   the markup is shared, components are documented in themes/smalt/cookbook.md.
 * Pages are standalone: all CSS/JS inline, photos base64 from content/img/<file>; fonts relative (recipes/fonts/).
 * Also writes themes/<id>/preview.html for every theme (the first recipe rendered in that theme).

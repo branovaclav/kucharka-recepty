@@ -8,7 +8,7 @@ Read first, in this order:
 
 1. [`docs/AGENT.md`](docs/AGENT.md): the full handover (architecture, Notion schema, sync, adding a recipe, themes, constraints).
 2. [`docs/CONTENT-FORMAT.md`](docs/CONTENT-FORMAT.md): the format of `content/<slug>.md`.
-3. [`themes/smalt/cookbook.md`](themes/smalt/cookbook.md): the component catalogue plus the official-site O-sections.
+3. [`themes/sesit/cookbook.md`](themes/sesit/cookbook.md): the default theme („Babiččin sešit“). For the shared O-sections and component catalogue history see also [`themes/smalt/cookbook.md`](themes/smalt/cookbook.md).
 4. [`README.md`](README.md): a short overview.
 
 Hard rules:

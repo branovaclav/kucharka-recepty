@@ -1,7 +1,7 @@
 ---
 slug: "hamburger"
 title: "Hamburger"
-theme: "smalt"
+theme: "sesit"
 tint: "minced"
 lang: "sk"
 total_time: 30

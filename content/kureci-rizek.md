@@ -1,7 +1,7 @@
 ---
 slug: "kureci-rizek"
 title: "Kuřecí řízek"
-theme: "smalt"
+theme: "sesit"
 tint: "chicken"
 lang: "cs"
 total_time: 40

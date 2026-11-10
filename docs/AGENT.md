@@ -2,6 +2,7 @@
 
 This file has everything a new agent needs, given **only this repo, a Notion connector and `gh` logged in as branovaclav**.
 Read it top to bottom once. The Markdown format is in [CONTENT-FORMAT.md](CONTENT-FORMAT.md), and the visual components are in
+[`themes/sesit/cookbook.md`](../themes/sesit/cookbook.md) (default theme). Shared O-sections and the original component catalogue also live in
 [`themes/smalt/cookbook.md`](../themes/smalt/cookbook.md).
 
 ## Purpose
@@ -58,9 +59,10 @@ content/img/<file>.jpg        web-ready photos embedded by build.py
 content/img/originals/        photos as downloaded from the credited source (input of tools/images.py)
 themes/
   _shared/                    tints.css icons.css official.css script.js (used by every theme)
-  smalt/                      DEFAULT. theme.json fonts.css design.css fonts/ cookbook.md (component catalogue + O-sections)
-                              index.css index.template.html (the index is always Smalt; the „Správa v Notion“ link lives here)
-  len/  sesit/                alternative themes: theme.json fonts.css design.css fonts/ cookbook.md
+  sesit/                      DEFAULT („Babiččin sešit“). theme.json fonts.css design.css fonts/ cookbook.md
+                              index.css index.template.html (the index uses sesit; the „Správa v Notion“ link lives here)
+  smalt/  len/                alternative themes: theme.json fonts.css design.css fonts/ cookbook.md
+                              (smalt still holds the shared O-sections catalogue in cookbook.md)
   <id>/preview.html           GENERATED: the reference recipe (kureci-rizek) rendered in that theme
 recipes/<slug>.html           GENERATED cooking pages (inline CSS/JS, base64 photos)
 recipes/fonts/*.woff2         GENERATED copy of every theme's fonts
@@ -206,7 +208,7 @@ the Action do it; both give identical bytes.
    ([CONTENT-FORMAT.md](CONTENT-FORMAT.md)). Our additions go only into `::: our-tip`, `::: note` or `::: warning`.
    You may leave the synced keys empty; they fill in from Notion.
 3. **Photos:** `python3 tools/images.py <slug>` → `content/img/…`, thumb, cover.
-4. **Notion row** in Recipes: Title, Theme (smalt), Total time, Difficulty, Labels, Main ingredient, Source, and
+4. **Notion row** in Recipes: Title, Theme (`sesit`, the default), Total time, Difficulty, Labels, Main ingredient, Source, and
    **Page = `https://branovaclav.github.io/kucharka-recepty/recipes/<slug>.html`**. Relate Appliances (from the twelve only) and
    Ingredients (create the missing ones). Set the cover to `…/images/covers/<slug>.jpg`. The body is the embed + link above.
    **Leave Overall, the person ratings, Last prepared and Notes empty.**
@@ -217,15 +219,17 @@ the Action do it; both give identical bytes.
 
 ## Switching a theme
 
-Set **Theme** on the recipe's Notion row (`smalt`, `len` or `sesit`) and run the sync. Or, if the Notion Theme is empty, set
+Set **Theme** on the recipe's Notion row (`sesit`, `smalt` or `len`) and run the sync. Or, if the Notion Theme is empty, set
 `theme:` in the Markdown front matter and push. The Notion value wins when it is set. Compare the themes first at
-`…/themes/<id>/preview.html`. Braňo chose **smalt** as the official look, and the index always uses smalt (`vocab.INDEX_THEME`).
+`…/themes/<id>/preview.html`. Braňo chose **sesit** („Babiččin sešit“) as the official look; new recipes default to it
+(`vocab.DEFAULT_THEME`), and the index always uses sesit (`vocab.INDEX_THEME`, templates in `themes/sesit/`).
 
 To **add a theme**, create `themes/<id>/` with `theme.json`
 (`{"name","letter","theme_color","css":["fonts.css","design.css"],"fonts":[…],"status"}`), `fonts.css` (`url("fonts/…")`),
 `design.css` and `fonts/`. Font file names must be unique across themes, because they all land in `recipes/fonts/`. Every
-theme styles the same markup. The components are listed in `themes/smalt/cookbook.md` §7 and the O-sections. CSS order on a
-page: theme fonts.css → `_shared/tints.css` → `_shared/icons.css` → theme design.css → `_shared/official.css`. If you add an
+theme styles the same markup. The components are listed in `themes/sesit/cookbook.md` §7 and the O-sections in
+`themes/smalt/cookbook.md`. CSS order on a page: theme fonts.css → `_shared/tints.css` → `_shared/icons.css` → theme
+design.css → `_shared/official.css`. The index theme also needs `index.css` + `index.template.html`. If you add an
 option to the Notion Theme select, you need the matching folder.
 
 ## Renaming a slug (manual)
@@ -290,8 +294,8 @@ Use Playwright for layout: no horizontal overflow at 375, 393, 820×1180 and 118
 
 | Slug | Source | Author | Tint | Theme |
 |---|---|---|---|---|
-| kureci-rizek | Toprecepty.cz | blazena.blazkova | chicken | smalt |
-| bryndzove-halusky | Varecha.sk (sk) | Jana Štrbková | pasta-rice | smalt |
-| spagety-carbonara | Toprecepty.cz | Eliza | pasta-rice (the bacon is a flavouring) | smalt |
-| palacinky | Toprecepty.cz | lnk-lnk (photo ivulinka) | veg | smalt |
-| hamburger | **own recipe** (`own: true`, sk) | Braňo (photo Stanley Kustamin / Unsplash) | minced | smalt |
+| kureci-rizek | Toprecepty.cz | blazena.blazkova | chicken | sesit |
+| bryndzove-halusky | Varecha.sk (sk) | Jana Štrbková | pasta-rice | sesit |
+| spagety-carbonara | Toprecepty.cz | Eliza | pasta-rice (the bacon is a flavouring) | sesit |
+| palacinky | Toprecepty.cz | lnk-lnk (photo ivulinka) | veg | sesit |
+| hamburger | **own recipe** (`own: true`, sk) | Braňo (photo Stanley Kustamin / Unsplash) | minced | sesit |

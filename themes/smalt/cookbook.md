@@ -1,14 +1,15 @@
-# Rodinná kuchařka — canonical cookbook (design A „Smalt & puntík“)
+# Rodinná kuchařka — component catalogue + O-sections (design A „Smalt & puntík“)
 
-**This file is the single source of truth for the official recipe site.**
-Live site: https://branovaclav.github.io/kucharka-recepty/ · design previews (frozen, do not edit): `/designs/`.
+**The live default theme is `sesit` („Babiččin sešit“).** This file remains the shared component catalogue (sections 1–8)
+and the official-site contract (O1–O9). Live site: https://branovaclav.github.io/kucharka-recepty/ · design previews
+(frozen, do not edit): `/designs/`.
 
-It is the design-A cookbook (sections 1–8 below, unchanged from `designs/smalt`, kept as the component catalogue)
-**plus the "Official site" part (sections O1–O9 at the end), which wins wherever they differ.**
-Production CSS/JS lives in `themes/smalt/{fonts,design,index}.css` + `themes/_shared/{tints,icons,official}.css, script.js`;
-the markup is produced by `tools/build.py` from `content/<slug>.md`. If a snippet here and those files disagree, the files win.
-Sections 1–8 still mention the old "sync script patching `data-sync` regions". Nothing patches HTML today: every page is
-regenerated (see O1/O6), and the `data-sync` attributes remain as stable hooks for CSS and tests.
+Default production CSS for recipes/index is under `themes/sesit/` (`fonts.css`, `design.css`, `index.css`,
+`index.template.html`). Smalt CSS under `themes/smalt/` stays available as an alternative theme. Shared pieces live in
+`themes/_shared/{tints,icons,official}.css, script.js`. Markup is produced by `tools/build.py` from `content/<slug>.md`.
+If a snippet here and those files disagree, the files win. Sections 1–8 still mention the old "sync script patching
+`data-sync` regions". Nothing patches HTML today: every page is regenerated (see O1/O6), and the `data-sync` attributes
+remain as stable hooks for CSS and tests.
 
 ---
 
@@ -929,10 +930,10 @@ Waterfall: **Notion → `data/<slug>.json` (tools/sync.py, assistant's box) → 
 | `content/img/`, `content/img/originals/` | web-ready / original photos | `tools/images.py` / human |
 | `data/<slug>.json` | Notion snapshot | `tools/sync.py` only |
 | `themes/_shared/` | `tints.css icons.css official.css script.js` (all themes) | human |
-| `themes/<id>/` | `theme.json fonts.css design.css fonts/ cookbook.md` (+ `index.css index.template.html` for smalt) | human |
+| `themes/<id>/` | `theme.json fonts.css design.css fonts/ cookbook.md` (+ `index.css index.template.html` for the index theme, currently sesit) | human |
 | `themes/<id>/preview.html` | the reference recipe in that theme | **generated** |
 | `recipes/<slug>.html`, `recipes/fonts/` | standalone cooking pages (inline CSS/JS, base64 photos), every theme's fonts | **generated** |
-| `index.html` | recipe index (always smalt) | **generated** from `themes/smalt/index.template.html` |
+| `index.html` | recipe index (always the `vocab.INDEX_THEME`, currently **sesit**) | **generated** from `themes/sesit/index.template.html` |
 | `images/thumbs/<slug>.jpg`, `images/covers/<slug>.jpg` | index card 480×360 q74, Notion cover ≤1200 q80 | `tools/images.py` |
 | `designs/` | frozen proposals A/B/C | nobody |
 
@@ -999,7 +1000,7 @@ line, the footer starts with the badge + „Vlastní rodinný recept (autor …)
 <!-- @c:own-badge -->
 <p class="own-badge own-badge--hero" lang="cs">Náš recept</p>   <!-- in .hero-text, between the labels and the <h1> -->
 <!-- /@c:own-badge -->
-<span class="own-badge">Náš recept</span>                         <!-- inline: source footer; index card (.rcard .own-badge, themes/smalt/index.css) -->
+<span class="own-badge">Náš recept</span>                         <!-- inline: source footer; index card (.rcard .own-badge, themes/sesit/index.css) -->
 ```
 
 ### `@c:step-list`
@@ -1008,11 +1009,14 @@ e.g. approximate times per appliance. Any other unknown block inside a step fail
 
 ## O5. Index (`index.html`)
 
-Smalt header „Rodinná kuchařka“ with the „Správa v Notion“ link (in the template), a collapsible `<details id="filters">` (open by
-default at ≥760 px), and a card grid of 1/2/3 columns. A card has the thumb, title, time, difficulty pips and overall rating colour.
-Filters run client-side on the inline JSON `#recipes-data`: ingredients (a card must contain **all** selected), max time
-(30/45/60/90), difficulty, appliances, labels, overall rating (loved/ok/disliked/unrated). Sort: title (cs collation), time,
-last prepared. Chips are generated only for values that occur in at least one recipe. Tested at 375/393/820×1180/1180×820.
+The live index uses **sesit** (`vocab.INDEX_THEME`): torn notebook-paper header and cards on a gingham tablecloth, Caveat /
+Literata / Courier Prime, with the „Správa v Notion“ link in `themes/sesit/index.template.html`. A collapsible
+`<details id="filters">` (open by default at ≥760 px) and a card grid of 1/2/3 columns. A card has the thumb, title, time,
+difficulty pips, overall rating and a main-ingredient pastel tint (per-card `data-tint`). Filters run client-side on the
+inline JSON `#recipes-data`: ingredients (a card must contain **all** selected), max time (30/45/60/90), difficulty,
+appliances, labels, overall rating (loved/ok/disliked/unrated). Sort: title (cs collation), time, last prepared. Chips are
+generated only for values that occur in at least one recipe. Tested at 375/393/820×1180/1180×820. (The Smalt index files
+under `themes/smalt/` remain as an unused alternative template.)
 
 ## O6. Data contract (Notion → JSON → front matter → page)
 

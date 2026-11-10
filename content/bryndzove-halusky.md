@@ -1,7 +1,7 @@
 ---
 slug: "bryndzove-halusky"
 title: "Bryndzové halušky"
-theme: "smalt"
+theme: "sesit"
 tint: "pasta-rice"
 lang: "sk"
 total_time: 40

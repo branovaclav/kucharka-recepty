@@ -1,7 +1,7 @@
 ---
 slug: "palacinky"
 title: "Palačinky"
-theme: "smalt"
+theme: "sesit"
 tint: "veg"
 lang: "cs"
 total_time: 75
