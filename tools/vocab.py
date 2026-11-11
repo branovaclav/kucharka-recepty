@@ -2,8 +2,8 @@
 import re, unicodedata
 
 SITE = 'https://branovaclav.github.io/kucharka-recepty/'
-DEFAULT_THEME = 'smalt'
-INDEX_THEME = 'smalt'
+DEFAULT_THEME = 'sesit'
+INDEX_THEME = 'sesit'
 
 LABELS_CS = {"Quick": "Rychlé", "Beginner": "Pro začátečníky", "Kids' favourite candidate": "Tip pro děti", "Sweet": "Sladké",
              "Meatless": "Bez masa", "Weekend": "Na víkend", "To try": "Vyzkoušet", "Classic": "Klasika", "Fried": "Smažené",

@@ -1,7 +1,7 @@
-> **Theme `len` (design B „Len“) in the official build.** This catalogue is the design-phase document, ported unchanged.
-> In production the theme is `themes/len/theme.json` + `fonts.css` + `design.css` + `fonts/`. The markup is shared with every
-> theme and produced by `tools/build.py`. The rules that win are in `themes/smalt/cookbook.md` (O-sections) and `docs/AGENT.md`.
-> Live preview: `themes/len/preview.html`. To use it for a recipe, set Notion Theme = `len` (or front matter `theme: len`).
+> **Theme `len` (design B „Len“) — alternative theme.** The default is `sesit`. This catalogue is the design-phase document,
+> ported unchanged. In production: `themes/len/theme.json` + `fonts.css` + `design.css` + `fonts/`. The markup is shared with
+> every theme and produced by `tools/build.py`. The rules that win are in `themes/smalt/cookbook.md` (O-sections) and
+> `docs/AGENT.md`. Live preview: `themes/len/preview.html`. To use it for a recipe, set Notion Theme = `len` (or `theme: len`).
 
 # Design cookbook B — „Len“
 
@@ -899,7 +899,7 @@ line, the footer starts with the badge + „Vlastní rodinný recept (autor …)
 <!-- @c:own-badge -->
 <p class="own-badge own-badge--hero" lang="cs">Náš recept</p>   <!-- in .hero-text, between the labels and the <h1> -->
 <!-- /@c:own-badge -->
-<span class="own-badge">Náš recept</span>                         <!-- inline: source footer; index card (.rcard .own-badge, themes/smalt/index.css) -->
+<span class="own-badge">Náš recept</span>                         <!-- inline: source footer; index card (.rcard .own-badge, themes/sesit/index.css) -->
 ```
 
 ## 8. New recipe page — checklist

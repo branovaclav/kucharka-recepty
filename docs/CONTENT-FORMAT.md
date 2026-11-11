@@ -27,7 +27,7 @@ Markdown, and Notion never touches them.
 |---|---|---|
 | `slug` | md | must equal the file name |
 | `title` | **Notion** Title | page `<h1>` and `<title>` |
-| `theme` | **Notion** Theme (if set) else md | `smalt` (default) · `len` · `sesit` (`themes/<id>/`) |
+| `theme` | **Notion** Theme (if set) else md | `sesit` (default) · `smalt` · `len` (`themes/<id>/`) |
 | `tint` | derived from `main_ingredient` | `chicken · pork-beef · minced · pasta-rice · fish · veg` |
 | `lang` | md | `cs` or `sk` (the source's language; Slovak shows „Porcie“) |
 | `total_time` | **Notion** Total time | minutes (int) |

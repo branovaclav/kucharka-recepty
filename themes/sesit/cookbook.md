@@ -1,7 +1,8 @@
-> **Theme `sesit` (design C „Babiččin sešit“) in the official build.** This catalogue is the design-phase document, ported unchanged.
-> In production the theme is `themes/sesit/theme.json` + `fonts.css` + `design.css` + `fonts/`. The markup is shared with every
-> theme and produced by `tools/build.py`. The rules that win are in `themes/smalt/cookbook.md` (O-sections) and `docs/AGENT.md`.
-> Live preview: `themes/sesit/preview.html`. To use it for a recipe, set Notion Theme = `sesit` (or front matter `theme: sesit`).
+> **Theme `sesit` (design C „Babiččin sešit“) — the DEFAULT theme** (`vocab.DEFAULT_THEME` / `vocab.INDEX_THEME`).
+> In production: `themes/sesit/theme.json` + `fonts.css` + `design.css` + `fonts/` + `index.css` + `index.template.html`.
+> The markup is shared with every theme and produced by `tools/build.py` / `build_index.py`. Shared O-sections also live in
+> `themes/smalt/cookbook.md` and `docs/AGENT.md`. Live preview: `themes/sesit/preview.html`. New recipes and the index use
+> sesit unless Notion Theme / front matter picks another.
 
 # Design cookbook C — „Babiččin sešit“
 
@@ -934,7 +935,16 @@ html.is-framed .frame-open { padding-top: max(.5rem, env(safe-area-inset-top)); 
 }
 ```
 
-### 7.25 „Náš recept“ badge (our own recipe)  `@c:own-badge`
+### 7.25 Index (`index.html`)  `@c:index`
+
+The live recipe list uses this theme (`vocab.INDEX_THEME = sesit`). Files: `themes/sesit/index.css` +
+`index.template.html`. Look: gingham tablecloth, torn-edge squared-paper header and recipe cards (clip-path tear),
+washi tape on the filters card, Caveat / Literata / Courier Prime, kraft „Správa v Notion“ button. Each `.rcard` keeps
+`data-tint` and sets its own `--tint` / `--tint-strong` so the polaroid tape and body strip follow the main ingredient.
+„Náš recept“ on own-recipe cards uses the same red rubber stamp as `@c:own-badge`. Filters/sort behaviour matches the
+shared script in the template (ingredients must all match, max time, difficulty, appliances, labels, family rating).
+
+### 7.26 „Náš recept“ badge (our own recipe)  `@c:own-badge`
 
 Shown only when the recipe Markdown has `own: true` (front matter, Markdown-only, not a Notion field): our own family
 recipe, written by us, not taken from any source. Sešit: red rubber stamp (typewriter caps, `--red`, double rim on the hero variant, rotated), „♥“ prefix.
@@ -946,7 +956,7 @@ line, the footer starts with the badge + „Vlastní rodinný recept (autor …)
 <!-- @c:own-badge -->
 <p class="own-badge own-badge--hero" lang="cs">Náš recept</p>   <!-- in .hero-text, between the labels and the <h1> -->
 <!-- /@c:own-badge -->
-<span class="own-badge">Náš recept</span>                         <!-- inline: source footer; index card (.rcard .own-badge, themes/smalt/index.css) -->
+<span class="own-badge">Náš recept</span>                         <!-- inline: source footer; index card (.rcard .own-badge, themes/sesit/index.css) -->
 ```
 
 ## 8. New recipe page — checklist

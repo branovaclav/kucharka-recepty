@@ -20,7 +20,7 @@ Notion ──sync.py──▶ data/<slug>.json ──▶ GitHub Action on every 
 |---|---|
 | `content/<slug>.md` | **The recipe.** Front matter (metadata) plus the original Czech/Slovak text verbatim, with our tips in marked boxes. [Format](docs/CONTENT-FORMAT.md) |
 | `data/<slug>.json` | Notion snapshot written by the sync. Notion wins for those fields. |
-| `themes/<id>/` | Presentation: `smalt` (default, official), `len`, `sesit`. Chosen per recipe (`theme:` / Notion Theme). Previews: `/themes/<id>/preview.html` |
+| `themes/<id>/` | Presentation: `sesit` (default, „Babiččin sešit“), `smalt`, `len`. Chosen per recipe (`theme:` / Notion Theme). Previews: `/themes/<id>/preview.html` |
 | `recipes/`, `index.html` | **Generated.** Do not edit. |
 | `tools/` | sync, build steps, photo prep, vocabularies |
 | `designs/` | Frozen design proposals A/B/C (kept as Braňo asked) |

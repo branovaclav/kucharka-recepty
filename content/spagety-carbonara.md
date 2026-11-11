@@ -1,7 +1,7 @@
 ---
 slug: "spagety-carbonara"
 title: "Špagety carbonara"
-theme: "smalt"
+theme: "sesit"
 tint: "pasta-rice"
 lang: "cs"
 total_time: 35
